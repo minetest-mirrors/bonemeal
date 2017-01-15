@@ -12,35 +12,10 @@ local crops = {
 -- add to crop list to force grow
 -- {crop name start_, growth steps, seed node (if required)}
 -- e.g. {"farming:wheat_", 8, "farming:seed_wheat"}
-
 function bonemeal:add_crop(list)
 
 	for n = 1, #list do
 		table.insert(crops, list[n])
-	end
-end
-
------ plants
-
--- default plants
-local plants = {
-	"air",
-	"flowers:dandelion_white",
-	"flowers:dandelion_yellow",
-	"flowers:geranium",
-	"flowers:rose",
-	"flowers:tulip",
-	"flowers:viola",
-}
-
--- add to plant list to grow among grass
--- "plant node name"
--- e.g. "flowers:rose"
-
-function bonemeal:add_plant(list)
-
-	for n = 1, #list do
-		table.insert(plants, list[n])
 	end
 end
 
@@ -205,8 +180,36 @@ local function check_crops(pos, nodename)
 
 end
 
+--helper tables
+local green_grass = {
+	"default:grass_2", "default:grass_3", "default:grass_4", "default:grass_5"
+}
 
--- soil check
+local dry_grass = {
+	"default:dry_grass_2", "default:dry_grass_3", "default:dry_grass_4", "default:dry_grass_5"
+}
+
+local flowers = {
+	"air", "flowers:dandelion_white", "flowers:dandelion_yellow",
+	"flowers:geranium", "flowers:rose", "flowers:tulip", "flowers:viola",
+}
+
+-- default biomes deco
+local deco = {
+	{"default:dirt_with_dry_grass", dry_grass, flowers}
+}
+
+-- add grass and flower/plant decoration for specific dirt types
+--  {dirt_node, {grass_nodes}, {flower_nodes}
+-- e.g. {"default:dirt_with_dry_grass", dry_grass, flowers}
+function bonemeal:add_deco(list)
+
+	for n = 1, #list do
+		table.insert(deco, list[n])
+	end
+end
+
+-- check soil for specific decoration placement
 local function check_soil(pos, nodename)
 
 	local dirt = minetest.find_nodes_in_area_under_air(
@@ -214,25 +217,36 @@ local function check_soil(pos, nodename)
 		{x = pos.x + 2, y = pos.y + 1, z = pos.z + 2},
 		{"group:soil"})
 
+	-- set default grass and decoration
+	local grass = green_grass
+	local decor = flowers
+
+	-- choose grass and decoration to use on dirt patch
+	for n = 1, #deco do
+
+		-- do we have a grass match?
+		if nodename == deco[n][1] then
+			grass = deco[n][2]
+			decor = deco[n][3]
+		end
+	end
+
+	-- loop through soil
 	for _,n in pairs(dirt) do
 
 		local pos2 = n
 
 		pos2.y = pos2.y + 1
 
-		if math.random(0, 5) > 3 then
+		-- place random decoration (rare)
+		if math.random(1, 5) == 5 then
 
 			minetest.swap_node(pos2,
-				{name = plants[math.random(1, #plants)]})
+				{name = decor[math.random(1, #decor)]})
 		else
-
-			if nodename == "default:dirt_with_dry_grass" then
-				minetest.swap_node(pos2,
-					{name = "default:dry_grass_" .. math.random(1, 5)})
-			else
-				minetest.swap_node(pos2,
-					{name = "default:grass_" .. math.random(1, 5)})
-			end
+			-- place random grass (common)
+			minetest.swap_node(pos2,
+				{name = grass[math.random(1, #grass)]})
 		end
 
 		particle_effect(pos2)

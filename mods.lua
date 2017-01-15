@@ -54,6 +54,11 @@ if minetest.get_modpath("ethereal") then
 		{"ethereal:bamboo_sprout", ethereal.grow_bamboo_tree, "soil"},
 		{"ethereal:birch_sapling", ethereal.grow_birch_tree, "soil"},
 	})
+
+	bonemeal:add_deco({
+		{"ethereal:crystal_dirt", {"ethereal:crystalgrass", "air", "air", "air", "air"},
+			{"ethereal:crystal_spike", "air", "air", "air", "air"}}
+	})
 end
 
 
