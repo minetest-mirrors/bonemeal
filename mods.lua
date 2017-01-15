@@ -1,4 +1,16 @@
 
+
+-- craft bones from animalmaterials into bonemeal
+if minetest.get_modpath("animalmaterials") then
+
+	minetest.register_craft({
+		type = "shapeless",
+		output = "bonemeal:bonemeal 2",
+		recipe = {"animalmaterials:bone"},
+	})
+end
+
+
 if farming and farming.mod and farming.mod == "redo" then
 
 	bonemeal:add_crop({

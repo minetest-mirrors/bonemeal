@@ -1,72 +1,7 @@
 
 bonemeal = {}
 
--- bone item
-minetest.register_craftitem("bonemeal:bone", {
-	description = "Bone",
-	inventory_image = "bonemeal_bone.png",
-})
-
--- bonemeal recipes
-minetest.register_craft({
-	type = "shapeless",
-	output = "bonemeal:bonemeal 2",
-	recipe = {"bonemeal:bone"},
-})
-
-minetest.register_craft({
-	type = "shapeless",
-	output = "bonemeal:bonemeal 4",
-	recipe = {"bones:bones"},
-})
-
--- have animalmaterials found, craft bone into bonemeal
-if minetest.get_modpath("animalmaterials") then
-
-	minetest.register_craft({
-		type = "shapeless",
-		output = "bonemeal:bonemeal 2",
-		recipe = {"animalmaterials:bone"},
-	})
-end
-
--- add bones to dirt
-minetest.override_item("default:dirt", {
-	drop = {
-		max_items = 1,
-		items = {
-			{
-				items = {"bonemeal:bone", "default:dirt"},
-				rarity = 30,
-			},
-			{
-				items = {"default:dirt"},
-			}
-		}
-	},
-})
-
-
--- particles
-local function particle_effect(pos)
-
-	minetest.add_particlespawner({
-		amount = 4,
-		time = 0.15,
-		minpos = pos,
-		maxpos = pos,
-		minvel = {x = -1, y = 2, z = -1},
-		maxvel = {x = 1, y = 4, z = 1},
-		minacc = {x = -1, y = -1, z = -1},
-		maxacc = {x = 1, y = 1, z = 1},
-		minexptime = 1,
-		maxexptime = 1,
-		minsize = 1,
-		maxsize = 3,
-		texture = "bonemeal_particle.png",
-	})
-end
-
+----- crops
 
 -- default crops
 local crops = {
@@ -85,6 +20,7 @@ function bonemeal:add_crop(list)
 	end
 end
 
+----- plants
 
 -- default plants
 local plants = {
@@ -108,6 +44,7 @@ function bonemeal:add_plant(list)
 	end
 end
 
+----- saplings
 
 -- special pine check for snow
 local function pine_grow(pos)
@@ -141,9 +78,31 @@ function bonemeal:add_sapling(list)
 	end
 end
 
+----- functions
 
--- moretrees specific function
-local function more_tree(pos, object)
+-- particles
+local function particle_effect(pos)
+
+	minetest.add_particlespawner({
+		amount = 4,
+		time = 0.15,
+		minpos = pos,
+		maxpos = pos,
+		minvel = {x = -1, y = 2, z = -1},
+		maxvel = {x = 1, y = 4, z = 1},
+		minacc = {x = -1, y = -1, z = -1},
+		maxacc = {x = 1, y = 1, z = 1},
+		minexptime = 1,
+		maxexptime = 1,
+		minsize = 1,
+		maxsize = 3,
+		texture = "bonemeal_particle.png",
+	})
+end
+
+
+-- tree type check
+local function grow_tree(pos, object)
 
 	if type(object) == "table" and object.axiom then
 		-- grow L-system tree
@@ -211,7 +170,7 @@ local function check_sapling(pos, nodename)
 			-- check if we can grow sapling
 			if can_grow then
 				particle_effect(pos)
-				more_tree(pos, saplings[n][2])
+				grow_tree(pos, saplings[n][2])
 				return
 			end
 		end
@@ -280,35 +239,7 @@ local function check_soil(pos, nodename)
 	end
 end
 
-
--- growing routine
-local function growth(pointed_thing)
-
-	local pos = pointed_thing.under
-	local node = minetest.get_node(pos)
-
-	-- return if nothing there
-	if node.name == "ignore" then
-		return
-	end
-
-	-- check for tree growth if pointing at sapling
-	if minetest.get_item_group(node.name, "sapling") > 0 then
-
-		check_sapling(pos, node.name)
-
-		return
-	end
-
-	-- check for crop growth
-	check_crops(pos, node.name)
-
-	-- grow grass and flowers
-	if minetest.get_item_group(node.name, "soil") > 0 then
-		check_soil(pos, node.name)
-	end
-end
-
+----- items
 
 -- bonemeal item
 minetest.register_craftitem("bonemeal:bonemeal", {
@@ -317,24 +248,82 @@ minetest.register_craftitem("bonemeal:bonemeal", {
 
 	on_use = function(itemstack, user, pointed_thing)
 
-		if pointed_thing.type == "node" then
-
-			-- Check if node protected
-			if minetest.is_protected(pointed_thing.under, user:get_player_name()) then
-				return
-			end
-
-			if not minetest.setting_getbool("creative_mode") then
-				itemstack:take_item()
-			end
-
-			growth(pointed_thing)
-
-			return itemstack
+		-- did we point at a node?
+		if pointed_thing.type ~= "node" then
+			return
 		end
+
+		-- is area protected?
+		if minetest.is_protected(pointed_thing.under, user:get_player_name()) then
+			return
+		end
+
+		-- take item if not in creative
+		if not minetest.setting_getbool("creative_mode") then
+			itemstack:take_item()
+		end
+
+		-- get position and node
+		local pos = pointed_thing.under
+		local node = minetest.get_node(pos)
+
+		-- return if nothing there
+		if node.name == "ignore" then
+			return
+		end
+
+		-- check for tree growth if pointing at sapling
+		if minetest.get_item_group(node.name, "sapling") > 0 then
+			check_sapling(pos, node.name)
+			return
+		end
+
+		-- check for crop growth
+		check_crops(pos, node.name)
+
+		-- grow grass and flowers
+		if minetest.get_item_group(node.name, "soil") > 0 then
+			check_soil(pos, node.name)
+		end
+
+		return itemstack
 	end,
 })
 
+-- bone item
+minetest.register_craftitem("bonemeal:bone", {
+	description = "Bone",
+	inventory_image = "bonemeal_bone.png",
+})
+
+-- bonemeal recipes
+minetest.register_craft({
+	type = "shapeless",
+	output = "bonemeal:bonemeal 2",
+	recipe = {"bonemeal:bone"},
+})
+
+minetest.register_craft({
+	type = "shapeless",
+	output = "bonemeal:bonemeal 4",
+	recipe = {"bones:bones"},
+})
+
+-- add bones to dirt
+minetest.override_item("default:dirt", {
+	drop = {
+		max_items = 1,
+		items = {
+			{
+				items = {"bonemeal:bone", "default:dirt"},
+				rarity = 30,
+			},
+			{
+				items = {"default:dirt"},
+			}
+		}
+	},
+})
 
 -- add support for other mods
 dofile(minetest.get_modpath("bonemeal") .. "/mods.lua")
