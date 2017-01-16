@@ -226,27 +226,28 @@ local function check_soil(pos, nodename)
 
 		-- do we have a grass match?
 		if nodename == deco[n][1] then
-			grass = deco[n][2]
-			decor = deco[n][3]
+			grass = deco[n][2] or {}
+			decor = deco[n][3] or {}
 		end
 	end
+
+	local pos2, nod
 
 	-- loop through soil
 	for _,n in pairs(dirt) do
 
-		local pos2 = n
+		pos2 = n
 
 		pos2.y = pos2.y + 1
 
 		-- place random decoration (rare)
 		if math.random(1, 5) == 5 then
-
-			minetest.swap_node(pos2,
-				{name = decor[math.random(1, #decor)]})
+			nod = decor[math.random(1, #decor)] or "air"
+			minetest.swap_node(pos2, {name = nod})
 		else
 			-- place random grass (common)
-			minetest.swap_node(pos2,
-				{name = grass[math.random(1, #grass)]})
+			nod = grass[math.random(1, #grass)] or "air"
+			minetest.swap_node(pos2, {name = nod})
 		end
 
 		particle_effect(pos2)
