@@ -1,0 +1,60 @@
+
+Bonemeal API
+============
+
+This guide will show you how to add saplings, crops and dirt types for the
+bonemeal mod to use from withhin your own mods.  Please make sure that bonemeal
+appears in the depends.txt file of your mod so everything work properly.
+
+
+Function Usage
+==============
+
+
+Adding Crops
+------------
+
+bonemeal:add_crop({ nodename_start, growing_steps, seed_name })
+
+This command is used to add new crops for bonemeal to work on.
+
+e.g.
+
+bonemeal:add_crop({
+	{"farming:cotton_", 8, "farming:seed_cotton"},
+	{"farming:wheat_", 8, "farming:seed_wheat"},
+})
+
+
+Adding Saplings
+---------------
+
+bonemeal:add_sapling({ sapling_node, function, soil_type[sand, dirt, nodename] })
+
+This command will add new saplings for bonemeal to grow on sand, soil or a
+specified node type.
+
+bonemeal:add_sapling({
+	{"ethereal:palm_sapling", ethereal.grow_palm_tree, "soil"},
+	{"ethereal:palm_sapling", ethereal.grow_palm_tree, "sand"},
+})
+
+
+Adding Dirt Decoration
+----------------------
+
+bonemeal:add_deco({ dirt_node, {grass_node_list}, {decor_node_list} })
+
+This command will add grass and decoration to specific dirt types.
+
+e.g.
+
+bonemeal:add_deco({"default:dirt_with_dry_grass", {"default:dry_grass_1", "air"},
+	{"flowers:rose", "flowers:viola"} })
+
+
+Final Words
+===========
+
+I hope this guide helps you add your own plants so you can grow them quickly
+with bonemeal.  Please check the mods.lua for more examples.
