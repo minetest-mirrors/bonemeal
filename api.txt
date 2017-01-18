@@ -65,6 +65,9 @@ bonemeal items and have the same effect.
   {pos} is the location to apply growing
   {strength} is how strong to grow [low of 1 to high of 4]
 
+Note: Higher strength items require lower light levels, and a strength of 4
+needs no light at all.
+
 
 Final Words
 ===========
