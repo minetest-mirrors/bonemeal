@@ -196,7 +196,10 @@ local flowers = {
 
 -- default biomes deco
 local deco = {
-	{"default:dirt_with_dry_grass", dry_grass, flowers}
+	{"default:dirt_with_dry_grass", dry_grass, flowers},
+	{"default:sand", {}, {"default:dry_shrub", "air", "air"} },
+	{"default:desert_sand", {}, {"default:dry_shrub", "air", "air"} },
+	{"default:silver_sand", {}, {"default:dry_shrub", "air", "air"} },
 }
 
 -- add grass and flower/plant decoration for specific dirt types
@@ -215,7 +218,7 @@ local function check_soil(pos, nodename)
 	local dirt = minetest.find_nodes_in_area_under_air(
 		{x = pos.x - 2, y = pos.y - 1, z = pos.z - 2},
 		{x = pos.x + 2, y = pos.y + 1, z = pos.z + 2},
-		{"group:soil"})
+		{"group:soil", "group:sand"})
 
 	-- set default grass and decoration
 	local grass = green_grass
@@ -297,7 +300,8 @@ minetest.register_craftitem("bonemeal:bonemeal", {
 		check_crops(pos, node.name)
 
 		-- grow grass and flowers
-		if minetest.get_item_group(node.name, "soil") > 0 then
+		if minetest.get_item_group(node.name, "soil") > 0
+		or minetest.get_item_group(node.name, "sand") > 0 then
 			check_soil(pos, node.name)
 		end
 

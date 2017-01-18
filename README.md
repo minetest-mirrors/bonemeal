@@ -11,7 +11,7 @@ The api.txt document shows how to add your own saplings, crops and grasses to
 the list by using one of the 3 commands included and the mod.lua file gives you
 many examples by using some of the popular mods available.
 
-https://forum.minetest.net/viewtopic.php?f=9&t=13284
+https://forum.minetest.net/viewtopic.php?f=9&t=16446
 
 Changelog:
 
