@@ -1,7 +1,6 @@
 
 bonemeal = {}
 
------ crops
 
 -- default crops
 local crops = {
@@ -9,19 +8,8 @@ local crops = {
 	{"farming:wheat_", 8, "farming:seed_wheat"},
 }
 
--- add to crop list to force grow
--- {crop name start_, growth steps, seed node (if required)}
--- e.g. {"farming:wheat_", 8, "farming:seed_wheat"}
-function bonemeal:add_crop(list)
 
-	for n = 1, #list do
-		table.insert(crops, list[n])
-	end
-end
-
------ saplings
-
--- special pine check for snow
+-- special pine check for nearby snow
 local function pine_grow(pos)
 
 	if minetest.find_node_near(pos, 1,
@@ -33,6 +21,7 @@ local function pine_grow(pos)
 	end
 end
 
+
 -- default saplings
 local saplings = {
 	{"default:sapling", default.grow_new_apple_tree, "soil"},
@@ -42,18 +31,42 @@ local saplings = {
 	{"default:pine_sapling", pine_grow, "soil"},
 }
 
--- add to sapling list
--- {sapling node, schematic or function name, "soil"|"sand"|specific_node}
---e.g. {"default:sapling", default.grow_new_apple_tree, "soil"}
+-- helper tables ( "" denotes a blank item )
+local green_grass = {
+	"default:grass_2", "default:grass_3", "default:grass_4",
+	"default:grass_5", "", ""
+}
 
-function bonemeal:add_sapling(list)
+local dry_grass = {
+	"default:dry_grass_2", "default:dry_grass_3", "default:dry_grass_4",
+	"default:dry_grass_5", "", ""
+}
 
-	for n = 1, #list do
-		table.insert(saplings, list[n])
-	end
+local flowers = {
+	"flowers:dandelion_white", "flowers:dandelion_yellow", "flowers:geranium",
+	"flowers:rose", "flowers:tulip", "flowers:viola", ""
+}
+
+-- add additional bakedclay flowers if enabled
+if minetest.get_modpath("bakedclay") then
+	flowers[7] = "bakedclay:delphinium"
+	flowers[8] = "bakedclay:thistle"
+	flowers[9] = "bakedclay:lazarus"
+	flowers[10] = "bakedclay:mannagrass"
+	flowers[11] = ""
 end
 
------ functions
+-- default biomes deco
+local deco = {
+	{"default:dirt_with_dry_grass", dry_grass, flowers},
+	{"default:sand", {}, {"default:dry_shrub", "", ""} },
+	{"default:desert_sand", {}, {"default:dry_shrub", "", "", ""} },
+	{"default:silver_sand", {}, {"default:dry_shrub", "", "", ""} },
+}
+
+
+----- local functions
+
 
 -- particles
 local function particle_effect(pos)
@@ -180,47 +193,6 @@ local function check_crops(pos, nodename)
 
 end
 
---helper tables ( "" denotes a blank item )
-local green_grass = {
-	"default:grass_2", "default:grass_3", "default:grass_4",
-	"default:grass_5", "", ""
-}
-
-local dry_grass = {
-	"default:dry_grass_2", "default:dry_grass_3", "default:dry_grass_4",
-	"default:dry_grass_5", "", ""
-}
-
-local flowers = {
-	"flowers:dandelion_white", "flowers:dandelion_yellow", "flowers:geranium",
-	"flowers:rose", "flowers:tulip", "flowers:viola", ""
-}
-
--- add additional bakedclay flowers if enabled
-if minetest.get_modpath("bakedclay") then
-	flowers[7] = "bakedclay:delphinium"
-	flowers[8] = "bakedclay:thistle"
-	flowers[9] = "bakedclay:lazarus"
-	flowers[10] = "bakedclay:mannagrass"
-end
-
--- default biomes deco
-local deco = {
-	{"default:dirt_with_dry_grass", dry_grass, flowers},
-	{"default:sand", {}, {"default:dry_shrub", "", ""} },
-	{"default:desert_sand", {}, {"default:dry_shrub", "", "", ""} },
-	{"default:silver_sand", {}, {"default:dry_shrub", "", "", ""} },
-}
-
--- add grass and flower/plant decoration for specific dirt types
---  {dirt_node, {grass_nodes}, {flower_nodes}
--- e.g. {"default:dirt_with_dry_grass", dry_grass, flowers}
-function bonemeal:add_deco(list)
-
-	for n = 1, #list do
-		table.insert(deco, list[n])
-	end
-end
 
 -- check soil for specific decoration placement
 local function check_soil(pos, nodename)
@@ -272,6 +244,43 @@ local function check_soil(pos, nodename)
 end
 
 
+-- global functions
+
+
+-- add to sapling list
+-- {sapling node, schematic or function name, "soil"|"sand"|specific_node}
+--e.g. {"default:sapling", default.grow_new_apple_tree, "soil"}
+
+function bonemeal:add_sapling(list)
+
+	for n = 1, #list do
+		table.insert(saplings, list[n])
+	end
+end
+
+
+-- add to crop list to force grow
+-- {crop name start_, growth steps, seed node (if required)}
+-- e.g. {"farming:wheat_", 8, "farming:seed_wheat"}
+function bonemeal:add_crop(list)
+
+	for n = 1, #list do
+		table.insert(crops, list[n])
+	end
+end
+
+
+-- add grass and flower/plant decoration for specific dirt types
+--  {dirt_node, {grass_nodes}, {flower_nodes}
+-- e.g. {"default:dirt_with_dry_grass", dry_grass, flowers}
+function bonemeal:add_deco(list)
+
+	for n = 1, #list do
+		table.insert(deco, list[n])
+	end
+end
+
+
 -- global on_use function for bonemeal
 function bonemeal:on_use(pos)
 
@@ -302,6 +311,7 @@ end
 
 ----- items
 
+
 -- bonemeal item
 minetest.register_craftitem("bonemeal:bonemeal", {
 	description = "Bone Meal",
@@ -331,7 +341,8 @@ minetest.register_craftitem("bonemeal:bonemeal", {
 	end,
 })
 
--- bone item
+
+-- bone
 minetest.register_craftitem("bonemeal:bone", {
 	description = "Bone",
 	inventory_image = "bonemeal_bone.png",
@@ -365,6 +376,7 @@ minetest.override_item("default:dirt", {
 		}
 	},
 })
+
 
 -- add support for other mods
 dofile(minetest.get_modpath("bonemeal") .. "/mods.lua")
