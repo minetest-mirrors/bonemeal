@@ -59,7 +59,7 @@ end
 -- default biomes deco
 local deco = {
 	{"default:dirt_with_dry_grass", dry_grass, flowers},
-	{"default:sand", {}, {"default:dry_shrub", "", ""} },
+	{"default:sand", {}, {"default:dry_shrub", "", "", ""} },
 	{"default:desert_sand", {}, {"default:dry_shrub", "", "", ""} },
 	{"default:silver_sand", {}, {"default:dry_shrub", "", "", ""} },
 }
@@ -104,18 +104,12 @@ local function grow_tree(pos, object)
 	elseif type(object) == "function" then
 		-- function
 		object(pos)
-
 	end
 end
 
 
 -- sapling check
 local function check_sapling(pos, nodename)
-
-	-- 1 in 2 chance of spawning sapling
-	if math.random(1, 2) == 1 then
-		return
-	end
 
 	-- what is sapling placed on?
 	local under =  minetest.get_node({
@@ -167,7 +161,7 @@ end
 
 
 -- crops check
-local function check_crops(pos, nodename)
+local function check_crops(pos, nodename, strength)
 
 	local stage = ""
 
@@ -179,7 +173,7 @@ local function check_crops(pos, nodename)
 
 			-- get stage number or set to 0 for seed
 			stage = tonumber( nodename:split("_")[2] ) or 0
-			stage = math.min(stage + math.random(1, 4), crops[n][2])
+			stage = math.min(stage + strength, crops[n][2])
 
 			minetest.set_node(pos, {name = crops[n][1] .. stage})
 
@@ -195,11 +189,16 @@ end
 
 
 -- check soil for specific decoration placement
-local function check_soil(pos, nodename)
+local function check_soil(pos, nodename, strength)
 
+	-- set radius according to strength
+	local side = strength - 1
+	local tall = math.max(strength - 2, 0)
+
+	-- get area of land with free space above
 	local dirt = minetest.find_nodes_in_area_under_air(
-		{x = pos.x - 2, y = pos.y - 1, z = pos.z - 2},
-		{x = pos.x + 2, y = pos.y + 1, z = pos.z + 2},
+		{x = pos.x - side, y = pos.y - tall, z = pos.z - side},
+		{x = pos.x + side, y = pos.y + tall, z = pos.z + side},
 		{"group:soil", "group:sand"})
 
 	-- set default grass and decoration
@@ -282,7 +281,7 @@ end
 
 
 -- global on_use function for bonemeal
-function bonemeal:on_use(pos)
+function bonemeal:on_use(pos, strength)
 
 	-- get node pointed at
 	local node = minetest.get_node(pos)
@@ -292,27 +291,68 @@ function bonemeal:on_use(pos)
 		return
 	end
 
+	-- make sure strength is between 1 and 4
+	strength = strength or 2
+	strength = math.max(strength, 1)
+	strength = math.min(strength, 4)
+
+	-- grow grass and flowers
+	if minetest.get_item_group(node.name, "soil") > 0
+	or minetest.get_item_group(node.name, "sand") > 0 then
+		check_soil(pos, node.name, strength)
+		return
+	end
+
+	-- light check depending on strength (strength of 4 = no light needed)
+	if (minetest.get_node_light(pos) or 0) < (12 - (strength * 3)) then
+		return
+	end
+
 	-- check for tree growth if pointing at sapling
-	if minetest.get_item_group(node.name, "sapling") > 0 then
+	if minetest.get_item_group(node.name, "sapling") > 0
+	and math.random(1, (5 - strength)) == 1 then
 		check_sapling(pos, node.name)
 		return
 	end
 
 	-- check for crop growth
-	check_crops(pos, node.name)
-
-	-- grow grass and flowers
-	if minetest.get_item_group(node.name, "soil") > 0
-	or minetest.get_item_group(node.name, "sand") > 0 then
-		check_soil(pos, node.name)
-	end
+	check_crops(pos, node.name, strength)
 end
 
 
 ----- items
 
 
--- bonemeal item
+-- mulch (strength 1)
+minetest.register_craftitem("bonemeal:mulch", {
+	description = "Mulch",
+	inventory_image = "bonemeal_mulch.png",
+
+	on_use = function(itemstack, user, pointed_thing)
+
+		-- did we point at a node?
+		if pointed_thing.type ~= "node" then
+			return
+		end
+
+		-- is area protected?
+		if minetest.is_protected(pointed_thing.under, user:get_player_name()) then
+			return
+		end
+
+		-- take item if not in creative
+		if not minetest.setting_getbool("creative_mode") then
+			itemstack:take_item()
+		end
+
+		-- call global on_use function with strength of 1
+		bonemeal:on_use(pointed_thing.under, 1)
+
+		return itemstack
+	end,
+})
+
+-- bonemeal (strength 2)
 minetest.register_craftitem("bonemeal:bonemeal", {
 	description = "Bone Meal",
 	inventory_image = "bonemeal_item.png",
@@ -334,8 +374,38 @@ minetest.register_craftitem("bonemeal:bonemeal", {
 			itemstack:take_item()
 		end
 
-		-- get position and call global on_use function
-		bonemeal:on_use(pointed_thing.under)
+		-- call global on_use function with strength of 2
+		bonemeal:on_use(pointed_thing.under, 2)
+
+		return itemstack
+	end,
+})
+
+
+-- fertiliser (strength 3)
+minetest.register_craftitem("bonemeal:fertiliser", {
+	description = "Fertiliser",
+	inventory_image = "bonemeal_fertiliser.png",
+
+	on_use = function(itemstack, user, pointed_thing)
+
+		-- did we point at a node?
+		if pointed_thing.type ~= "node" then
+			return
+		end
+
+		-- is area protected?
+		if minetest.is_protected(pointed_thing.under, user:get_player_name()) then
+			return
+		end
+
+		-- take item if not in creative
+		if not minetest.setting_getbool("creative_mode") then
+			itemstack:take_item()
+		end
+
+		-- call global on_use function with strength of 3
+		bonemeal:on_use(pointed_thing.under, 3)
 
 		return itemstack
 	end,
@@ -348,18 +418,42 @@ minetest.register_craftitem("bonemeal:bone", {
 	inventory_image = "bonemeal_bone.png",
 })
 
--- bonemeal recipes
+
+--- crafting recipes
+
+
+-- bonemeal (from bone)
 minetest.register_craft({
 	type = "shapeless",
 	output = "bonemeal:bonemeal 2",
 	recipe = {"bonemeal:bone"},
 })
 
+-- bonemeal (from player bones)
 minetest.register_craft({
 	type = "shapeless",
 	output = "bonemeal:bonemeal 4",
 	recipe = {"bones:bones"},
 })
+
+-- mulch
+minetest.register_craft({
+	type = "shapeless",
+	output = "bonemeal:mulch 4",
+	recipe = {
+		"group:tree", "group:leaves", "group:leaves",
+		"group:leaves", "group:leaves", "group:leaves",
+		"group:leaves", "group:leaves", "group:leaves"
+	},
+})
+
+-- fertiliser
+minetest.register_craft({
+	type = "shapeless",
+	output = "bonemeal:fertiliser 2",
+	recipe = {"bonemeal:bonemeal", "bonemeal:mulch"},
+})
+
 
 -- add bones to dirt
 minetest.override_item("default:dirt", {

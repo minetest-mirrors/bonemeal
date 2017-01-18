@@ -57,14 +57,17 @@ bonemeal:add_deco({"default:dirt_with_dry_grass", {"default:dry_grass_1", ""},
 Global ON_USE Function
 ----------------------
 
-bonemeal:on_use(pos)
+bonemeal:on_use(pos, strength)
 
 This function can be called from other mods to grow plants using alternative
 bonemeal items and have the same effect.
+
+  {pos} is the location to apply growing
+  {strength} is how strong to grow [low of 1 to high of 4]
 
 
 Final Words
 ===========
 
 I hope this guide helps you add your own plants so you can grow them quickly
-with bonemeal.  Please check the mods.lua for more examples.
+with the items included.  Please check the mods.lua for more examples.
