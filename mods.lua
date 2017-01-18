@@ -56,8 +56,8 @@ if minetest.get_modpath("ethereal") then
 	})
 
 	bonemeal:add_deco({
-		{"ethereal:crystal_dirt", {"ethereal:crystalgrass", "air", "air", "air", "air"}, {}},
-		{"ethereal:fiery_dirt", {"ethereal:dry_shrub", "air", "air", "air", "air"}, {}},
+		{"ethereal:crystal_dirt", {"ethereal:crystalgrass", "", "", "", ""}, {}},
+		{"ethereal:fiery_dirt", {"ethereal:dry_shrub", "", "", "", ""}, {}},
 	})
 end
 

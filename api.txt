@@ -45,11 +45,12 @@ Adding Dirt Decoration
 
 bonemeal:add_deco({ dirt_node, {grass_node_list}, {decor_node_list} })
 
-This command will add grass and decoration to specific dirt types.
+This command will add grass and decoration to specific dirt types, use "" to
+add an empty node.
 
 e.g.
 
-bonemeal:add_deco({"default:dirt_with_dry_grass", {"default:dry_grass_1", "air"},
+bonemeal:add_deco({"default:dirt_with_dry_grass", {"default:dry_grass_1", ""},
 	{"flowers:rose", "flowers:viola"} })
 
 

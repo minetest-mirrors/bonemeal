@@ -180,26 +180,36 @@ local function check_crops(pos, nodename)
 
 end
 
---helper tables
+--helper tables ( "" denotes a blank item )
 local green_grass = {
-	"default:grass_2", "default:grass_3", "default:grass_4", "default:grass_5"
+	"default:grass_2", "default:grass_3", "default:grass_4",
+	"default:grass_5", "", ""
 }
 
 local dry_grass = {
-	"default:dry_grass_2", "default:dry_grass_3", "default:dry_grass_4", "default:dry_grass_5"
+	"default:dry_grass_2", "default:dry_grass_3", "default:dry_grass_4",
+	"default:dry_grass_5", "", ""
 }
 
 local flowers = {
-	"air", "flowers:dandelion_white", "flowers:dandelion_yellow",
-	"flowers:geranium", "flowers:rose", "flowers:tulip", "flowers:viola",
+	"flowers:dandelion_white", "flowers:dandelion_yellow", "flowers:geranium",
+	"flowers:rose", "flowers:tulip", "flowers:viola", ""
 }
+
+-- add additional bakedclay flowers if enabled
+if minetest.get_modpath("bakedclay") then
+	flowers[7] = "bakedclay:delphinium"
+	flowers[8] = "bakedclay:thistle"
+	flowers[9] = "bakedclay:lazarus"
+	flowers[10] = "bakedclay:mannagrass"
+end
 
 -- default biomes deco
 local deco = {
 	{"default:dirt_with_dry_grass", dry_grass, flowers},
-	{"default:sand", {}, {"default:dry_shrub", "air", "air"} },
-	{"default:desert_sand", {}, {"default:dry_shrub", "air", "air"} },
-	{"default:silver_sand", {}, {"default:dry_shrub", "air", "air"} },
+	{"default:sand", {}, {"default:dry_shrub", "", ""} },
+	{"default:desert_sand", {}, {"default:dry_shrub", "", "", ""} },
+	{"default:silver_sand", {}, {"default:dry_shrub", "", "", ""} },
 }
 
 -- add grass and flower/plant decoration for specific dirt types
@@ -245,12 +255,16 @@ local function check_soil(pos, nodename)
 
 		-- place random decoration (rare)
 		if math.random(1, 5) == 5 then
-			nod = decor[math.random(1, #decor)] or "air"
-			minetest.swap_node(pos2, {name = nod})
+			nod = decor[math.random(1, #decor)] or ""
+			if nod ~= "" then
+				minetest.set_node(pos2, {name = nod})
+			end
 		else
 			-- place random grass (common)
-			nod = grass[math.random(1, #grass)] or "air"
-			minetest.swap_node(pos2, {name = nod})
+			nod = grass[math.random(1, #grass)] or ""
+			if nod ~= "" then
+				minetest.set_node(pos2, {name = nod})
+			end
 		end
 
 		particle_effect(pos2)
