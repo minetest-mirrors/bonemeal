@@ -16,3 +16,4 @@ https://forum.minetest.net/viewtopic.php?f=9&t=16446
 Changelog:
 
 - 0.1 - Initial release
+- 0.2 - Added global on_use function for bonemeal growth

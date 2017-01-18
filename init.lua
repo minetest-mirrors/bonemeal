@@ -257,6 +257,35 @@ local function check_soil(pos, nodename)
 	end
 end
 
+
+-- global on_use function for bonemeal
+function bonemeal:on_use(pos)
+
+	-- get node pointed at
+	local node = minetest.get_node(pos)
+
+	-- return if nothing there
+	if node.name == "ignore" then
+		return
+	end
+
+	-- check for tree growth if pointing at sapling
+	if minetest.get_item_group(node.name, "sapling") > 0 then
+		check_sapling(pos, node.name)
+		return
+	end
+
+	-- check for crop growth
+	check_crops(pos, node.name)
+
+	-- grow grass and flowers
+	if minetest.get_item_group(node.name, "soil") > 0
+	or minetest.get_item_group(node.name, "sand") > 0 then
+		check_soil(pos, node.name)
+	end
+end
+
+
 ----- items
 
 -- bonemeal item
@@ -281,29 +310,8 @@ minetest.register_craftitem("bonemeal:bonemeal", {
 			itemstack:take_item()
 		end
 
-		-- get position and node
-		local pos = pointed_thing.under
-		local node = minetest.get_node(pos)
-
-		-- return if nothing there
-		if node.name == "ignore" then
-			return
-		end
-
-		-- check for tree growth if pointing at sapling
-		if minetest.get_item_group(node.name, "sapling") > 0 then
-			check_sapling(pos, node.name)
-			return
-		end
-
-		-- check for crop growth
-		check_crops(pos, node.name)
-
-		-- grow grass and flowers
-		if minetest.get_item_group(node.name, "soil") > 0
-		or minetest.get_item_group(node.name, "sand") > 0 then
-			check_soil(pos, node.name)
-		end
+		-- get position and call global on_use function
+		bonemeal:on_use(pointed_thing.under)
 
 		return itemstack
 	end,

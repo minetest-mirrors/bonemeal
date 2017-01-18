@@ -53,6 +53,15 @@ bonemeal:add_deco({"default:dirt_with_dry_grass", {"default:dry_grass_1", "air"}
 	{"flowers:rose", "flowers:viola"} })
 
 
+Global ON_USE Function
+----------------------
+
+bonemeal:on_use(pos)
+
+This function can be called from other mods to grow plants using alternative
+bonemeal items and have the same effect.
+
+
 Final Words
 ===========
 
