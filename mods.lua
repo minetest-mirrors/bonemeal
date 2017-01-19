@@ -55,9 +55,20 @@ if minetest.get_modpath("ethereal") then
 		{"ethereal:birch_sapling", ethereal.grow_birch_tree, "soil"},
 	})
 
+	local grass = {"default:grass_3", "default:grass_4", "default:grass_5", ""}
+
 	bonemeal:add_deco({
 		{"ethereal:crystal_dirt", {"ethereal:crystalgrass", "", "", "", ""}, {}},
 		{"ethereal:fiery_dirt", {"ethereal:dry_shrub", "", "", "", ""}, {}},
+		{"ethereal:prairie_dirt", grass, {"flowers:dandelion_white",
+			"flowers:dandelion_yellow", "flowers:geranium", "flowers:rose",
+			"flowers:tulip", "flowers:viola", "ethereal:strawberry_7"}},
+		{"ethereal:gray_dirt", {}, {"ethereal:snowygrass", "", ""}},
+		{"ethereal:cold_dirt", {}, {"ethereal:snowygrass", "", ""}},
+		{"ethereal:mushroom_dirt", {}, {"flowers:mushroom_red", "flowers:mushroom_brown", "", "", ""}},
+		{"ethereal:jungle_dirt", grass, {"default:junglegrass", "", "", ""}},
+		{"ethereal:grove_dirt", grass, {"ethereal:fern", "", "", ""}},
+		{"ethereal:bamboo_dirt", grass, {}},
 	})
 end
 
