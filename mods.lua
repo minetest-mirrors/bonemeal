@@ -29,6 +29,7 @@ if farming and farming.mod and farming.mod == "redo" then
 		{"farming:grapes_", 8},
 		{"farming:rhubarb_", 3},
 		{"farming:barley_", 7},
+		{"farming:hemp_", 8},
 	})
 end
 
