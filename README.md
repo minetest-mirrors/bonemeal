@@ -23,3 +23,4 @@ Changelog:
 - 0.1 - Initial release
 - 0.2 - Added global on_use function for bonemeal growth
 - 0.3 - Added strength to on_use global for new items (mulch and fertiliser).
+- 0.4 - Added Intllib support and fr.txt file
