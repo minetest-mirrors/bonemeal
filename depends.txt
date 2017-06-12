@@ -3,3 +3,4 @@ intllib?
 farming?
 ethereal?
 moretrees?
+technic_worldgen?

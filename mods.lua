@@ -107,4 +107,10 @@ if minetest.get_modpath("moretrees") then
 		{"moretrees:rubber_tree_sapling", moretrees.spawn_rubber_tree_object, "soil"},
 		{"moretrees:fir_sapling", fir_grow, "soil"},
 	})
+
+elseif minetest.get_modpath("technic_worldgen") then
+
+	bonemeal.add_sapling({
+		{"moretrees:rubber_tree_sapling", technic.rubber_tree_model, "soil"}.
+	})
 end
