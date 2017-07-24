@@ -33,6 +33,8 @@ local saplings = {
 	{"default:acacia_sapling", default.grow_new_acacia_tree, "soil"},
 	{"default:aspen_sapling", default.grow_new_aspen_tree, "soil"},
 	{"default:pine_sapling", pine_grow, "soil"},
+	{"default:bush_sapling", default.grow_bush, "soil"},
+	{"default:acacia_bush_sapling", default.grow_acacia_bush, "soil"},
 }
 
 -- helper tables ( "" denotes a blank item )
