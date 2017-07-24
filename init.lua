@@ -479,6 +479,8 @@ minetest.override_item("default:dirt", {
 
 
 -- add support for other mods
-dofile(minetest.get_modpath("bonemeal") .. "/mods.lua")
+local path = minetest.get_modpath("bonemeal")
+dofile(path .. "/mods.lua")
+dofile(path .. "/lucky_block.lua")
 
 print (S("[bonemeal] loaded"))

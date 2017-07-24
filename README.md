@@ -25,3 +25,5 @@ Changelog:
 - 0.3 - Added strength to on_use global for new items (mulch and fertiliser).
 - 0.4 - Added Intllib support and fr.txt file
 - 0.5 - Added support for default bush and acacia bush saplings
+
+Lucky Blocks: 2
