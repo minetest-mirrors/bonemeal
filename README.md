@@ -22,8 +22,9 @@ Changelog:
 
 - 0.1 - Initial release
 - 0.2 - Added global on_use function for bonemeal growth
-- 0.3 - Added strength to on_use global for new items (mulch and fertiliser).
+- 0.3 - Added strength to on_use global for new items (mulch and fertiliser)
 - 0.4 - Added Intllib support and fr.txt file
 - 0.5 - Added support for default bush and acacia bush saplings
+- 0.6 - Using newer functions, Minetest 0.4.16 and above needed to run
 
 Lucky Blocks: 2

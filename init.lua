@@ -6,6 +6,13 @@ local MP = minetest.get_modpath(minetest.get_current_modname())
 local S, NS = dofile(MP .. "/intllib.lua")
 
 
+-- creative check
+local creative_mode_cache = minetest.settings:get_bool("creative_mode")
+function is_creative(name)
+	return creative_mode_cache or minetest.check_player_privs(name, {creative = true})
+end
+
+
 -- default crops
 local crops = {
 	{"farming:cotton_", 8, "farming:seed_cotton"},
@@ -347,7 +354,7 @@ minetest.register_craftitem("bonemeal:mulch", {
 		end
 
 		-- take item if not in creative
-		if not minetest.setting_getbool("creative_mode") then
+		if not is_creative(user:get_player_name()) then
 			itemstack:take_item()
 		end
 
@@ -376,7 +383,7 @@ minetest.register_craftitem("bonemeal:bonemeal", {
 		end
 
 		-- take item if not in creative
-		if not minetest.setting_getbool("creative_mode") then
+		if not is_creative(user:get_player_name()) then
 			itemstack:take_item()
 		end
 
@@ -406,7 +413,7 @@ minetest.register_craftitem("bonemeal:fertiliser", {
 		end
 
 		-- take item if not in creative
-		if not minetest.setting_getbool("creative_mode") then
+		if not is_creative(user:get_player_name()) then
 			itemstack:take_item()
 		end
 
