@@ -13,10 +13,12 @@ end
 
 if minetest.get_modpath("lucky_block") then
 
-lucky_block:add_blocks({
-	{"lig"},
-	{"dro", {"bonemeal:mulch", "bonemeal:bonemeal", "bonemeal:fertiliser"}, 10},
-	{"cus", growy},
-})
+	lucky_block:add_blocks({
+		{"lig"},
+		{"dro", {"bonemeal:mulch"}, 10},
+		{"dro", {"bonemeal:bonemeal"}, 10},
+		{"dro", {"bonemeal:fertiliser"}, 10},
+		{"cus", growy},
+	})
 
-end -- END IF
+end

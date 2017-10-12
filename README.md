@@ -27,4 +27,4 @@ Changelog:
 - 0.5 - Added support for default bush and acacia bush saplings
 - 0.6 - Using newer functions, Minetest 0.4.16 and above needed to run
 
-Lucky Blocks: 2
+Lucky Blocks: 5
