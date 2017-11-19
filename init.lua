@@ -245,7 +245,7 @@ local function check_soil(pos, nodename, strength)
 			end
 		else
 			-- place random grass (common)
-			nod = grass[math.random(1, #grass)] or ""
+			nod = #grass > 0 and grass[math.random(1, #grass)] or ""
 			if nod ~= "" then
 				minetest.set_node(pos2, {name = nod})
 			end
