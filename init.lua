@@ -294,10 +294,10 @@ end
 
 
 -- global on_use function for bonemeal
-function bonemeal:on_use(pos, strength)
+function bonemeal:on_use(pos, strength, node)
 
 	-- get node pointed at
-	local node = minetest.get_node(pos)
+	local node = node or minetest.get_node(pos)
 
 	-- return if nothing there
 	if node.name == "ignore" then
@@ -305,9 +305,24 @@ function bonemeal:on_use(pos, strength)
 	end
 
 	-- make sure strength is between 1 and 4
-	strength = strength or 2
+	strength = strength or 1
 	strength = math.max(strength, 1)
 	strength = math.min(strength, 4)
+
+	-- papyrus and cactus
+	if node.name == "default:papyrus" then
+
+		default.grow_papyrus(pos, node)
+		particle_effect(pos)
+
+		return
+	elseif node.name == "default:cactus" then
+
+		default.grow_cactus(pos, node)
+		particle_effect(pos)
+
+		return
+	end
 
 	-- grow grass and flowers
 	if minetest.get_item_group(node.name, "soil") > 0
@@ -449,6 +464,13 @@ minetest.register_craft({
 	recipe = {"bones:bones"},
 })
 
+-- bonemeal (from coral skeleton)
+minetest.register_craft({
+	type = "shapeless",
+	output = "bonemeal:bonemeal 2",
+	recipe = {"default:coral_skeleton"},
+})
+
 -- mulch
 minetest.register_craft({
 	type = "shapeless",
@@ -487,6 +509,7 @@ minetest.override_item("default:dirt", {
 
 -- add support for other mods
 local path = minetest.get_modpath("bonemeal")
+
 dofile(path .. "/mods.lua")
 dofile(path .. "/lucky_block.lua")
 

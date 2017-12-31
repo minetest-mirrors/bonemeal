@@ -26,5 +26,6 @@ Changelog:
 - 0.4 - Added Intllib support and fr.txt file
 - 0.5 - Added support for default bush and acacia bush saplings
 - 0.6 - Using newer functions, Minetest 0.4.16 and above needed to run
+- 0.7 - Can be used on papyrus and cactus now, added coral recipe, api addition
 
 Lucky Blocks: 5
