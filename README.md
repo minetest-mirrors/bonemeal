@@ -27,5 +27,6 @@ Changelog:
 - 0.5 - Added support for default bush and acacia bush saplings
 - 0.6 - Using newer functions, Minetest 0.4.16 and above needed to run
 - 0.7 - Can be used on papyrus and cactus now, added coral recipe, api addition
+- 0.8 - Added support for farming redo's new garlic, pepper and onion crops
 
 Lucky Blocks: 5
