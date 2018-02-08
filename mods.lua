@@ -1,5 +1,4 @@
 
-
 -- craft bones from animalmaterials into bonemeal
 if minetest.get_modpath("animalmaterials") then
 
@@ -34,6 +33,7 @@ if farming and farming.mod and farming.mod == "redo" then
 		{"farming:garlic_", 5},
 		{"farming:onion_", 5},
 		{"farming:pepper_", 5},
+		{"farming:pineapple_", 8},
 	})
 end
 
