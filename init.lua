@@ -496,7 +496,7 @@ minetest.override_item("default:dirt", {
 		max_items = 1,
 		items = {
 			{
-				items = {"bonemeal:bone", "default:dirt"},
+				items = {"bonemeal:bone"},
 				rarity = 30,
 			},
 			{
