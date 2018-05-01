@@ -176,7 +176,7 @@ end
 -- crops check
 local function check_crops(pos, nodename, strength)
 
-	local stage = ""
+	local stage, nod, def
 
 	-- grow registered crops
 	for n = 1, #crops do
@@ -188,7 +188,12 @@ local function check_crops(pos, nodename, strength)
 			stage = tonumber( nodename:split("_")[2] ) or 0
 			stage = math.min(stage + strength, crops[n][2])
 
-			minetest.set_node(pos, {name = crops[n][1] .. stage})
+			-- check for place_param setting
+			nod = crops[n][1] .. stage
+			def = minetest.registered_nodes[nod]
+			def = def and def.place_param2 or 0
+
+			minetest.set_node(pos, {name = nod, param2 = def})
 
 			particle_effect(pos)
 
@@ -228,7 +233,7 @@ local function check_soil(pos, nodename, strength)
 		end
 	end
 
-	local pos2, nod
+	local pos2, nod, def
 
 	-- loop through soil
 	for _,n in pairs(dirt) do
@@ -237,18 +242,18 @@ local function check_soil(pos, nodename, strength)
 
 		pos2.y = pos2.y + 1
 
-		-- place random decoration (rare)
 		if math.random(1, 5) == 5 then
+			-- place random decoration (rare)
 			nod = decor[math.random(1, #decor)] or ""
-			if nod ~= "" then
-				minetest.set_node(pos2, {name = nod})
-			end
 		else
 			-- place random grass (common)
 			nod = #grass > 0 and grass[math.random(1, #grass)] or ""
-			if nod ~= "" then
-				minetest.set_node(pos2, {name = nod})
-			end
+		end
+
+		if nod and nod ~= "" then
+			def = minetest.registered_nodes[nod]
+			def = def and def.place_param2 or 0
+			minetest.set_node(pos2, {name = nod, param2 = def})
 		end
 
 		particle_effect(pos2)

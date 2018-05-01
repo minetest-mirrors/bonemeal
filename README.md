@@ -28,5 +28,6 @@ Changelog:
 - 0.6 - Using newer functions, Minetest 0.4.16 and above needed to run
 - 0.7 - Can be used on papyrus and cactus now, added coral recipe, api addition
 - 0.8 - Added support for farming redo's new garlic, pepper and onion crops
+- 0.9 - Added support for farming redo's pea and beetroot crops, checks for place_param
 
 Lucky Blocks: 5
