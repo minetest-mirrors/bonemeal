@@ -290,10 +290,87 @@ end
 -- add grass and flower/plant decoration for specific dirt types
 --  {dirt_node, {grass_nodes}, {flower_nodes}
 -- e.g. {"default:dirt_with_dry_grass", dry_grass, flowers}
+-- if an entry already exists for a given dirt type, it will add new entries and all empty
+-- entries, allowing to both add decorations and decrease their frequency.
 function bonemeal:add_deco(list)
 
-	for n = 1, #list do
-		table.insert(deco, list[n])
+	for l = 1, #list do
+
+		for n = 1, #deco do
+
+			-- update existing entry
+			if list[l][1] == deco[n][1] then
+
+				-- adding grass types
+				for _,extra in ipairs(list[l][2]) do
+
+					if extra ~= "" then
+
+						for __,entry in ipairs(deco[n][2]) do
+
+							if extra == entry then
+								extra = false
+								break
+							end
+						end
+					end
+
+					if extra then
+						table.insert(deco[n][2], extra)
+					end
+				end
+
+				-- adding decoration types
+				for _,extra in ipairs(list[l][3]) do
+
+					if extra ~= "" then
+
+						for __,entry in ipairs(deco[n][3]) do
+
+							if extra == entry then
+								extra = false
+								break
+							end
+						end
+					end
+
+					if extra then
+						table.insert(deco[n][3], extra)
+					end
+				end
+
+				list[l] = false
+				break
+			end
+		end
+
+		if list[l] then
+			table.insert(deco, list[l])
+		end
+	end
+end
+
+
+-- definitively set a decration scheme
+-- this function will either add a new entry as is, or replace the existing one
+function bonemeal:set_deco(list)
+
+	for l = 1, #list do
+
+		for n = 1, #deco do
+
+			-- replace existing entry
+			if list[l][1] == deco[n][1] then
+				deco[n][2] = list[l][2]
+				deco[n][3] = list[l][3]
+				list[l] = false
+				break
+			end
+		end
+
+		if list[l] then
+			table.insert(deco, list[l])
+		end
 	end
 end
 
@@ -384,6 +461,7 @@ minetest.register_craftitem("bonemeal:mulch", {
 		return itemstack
 	end,
 })
+
 
 -- bonemeal (strength 2)
 minetest.register_craftitem("bonemeal:bonemeal", {

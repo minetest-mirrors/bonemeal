@@ -14,7 +14,9 @@ Function Usage
 Adding Crops
 ------------
 
-bonemeal:add_crop({ nodename_start, growing_steps, seed_name })
+bonemeal:add_crop({
+	{ nodename_start, growing_steps, seed_name }
+})
 
 This command is used to add new crops for bonemeal to work on.
 
@@ -29,7 +31,9 @@ bonemeal:add_crop({
 Adding Saplings
 ---------------
 
-bonemeal:add_sapling({ sapling_node, function, soil_type[sand, dirt, nodename] })
+bonemeal:add_sapling({
+	{ sapling_node, function, soil_type[sand, dirt, nodename] }
+})
 
 This command will add new saplings for bonemeal to grow on sand, soil or a
 specified node type.
@@ -43,15 +47,30 @@ bonemeal:add_sapling({
 Adding Dirt Decoration
 ----------------------
 
-bonemeal:add_deco({ dirt_node, {grass_node_list}, {decor_node_list} })
+bonemeal:add_deco({
+	{ dirt_node, {grass_node_list}, {decor_node_list} }
+})
 
 This command will add grass and decoration to specific dirt types, use "" to
-add an empty node.
+add an empty node. If some decorations have been already defined for this dirt type, new
+will be added to the respective list. All empty ("") entries will be added regardless,
+which allows to decrease the frequency of decoration emergence, if needed.
 
 e.g.
 
-bonemeal:add_deco({"default:dirt_with_dry_grass", {"default:dry_grass_1", ""},
-	{"flowers:rose", "flowers:viola"} })
+bonemeal:add_deco({
+	{"default:dirt_with_dry_grass", {"default:dry_grass_1", ""},
+		{"flowers:rose", "flowers:viola"} }
+})
+
+Thus, add_deco() always adds (to) a definition, and never overrides. To discard an existing
+definiton in favor of the new one, use
+
+bonemeal:set_deco({
+	{ dirt_node, {grass_node_list}, {decor_node_list} }
+})
+
+This command will set decoration for a given dirt type, fully replacing any existing definition.
 
 
 Global ON_USE Function
