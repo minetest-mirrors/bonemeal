@@ -176,7 +176,7 @@ end
 -- crops check
 local function check_crops(pos, nodename, strength)
 
-	local stage, nod, def
+	local mod, crop, stage, nod, def
 
 	-- grow registered crops
 	for n = 1, #crops do
@@ -184,8 +184,12 @@ local function check_crops(pos, nodename, strength)
 		if string.find(nodename, crops[n][1])
 		or nodename == crops[n][3] then
 
+			-- separate mod and node name
+			mod = nodename:split(":")[1] .. ":"
+			crop = nodename:split(":")[2]
+
 			-- get stage number or set to 0 for seed
-			stage = tonumber( nodename:split("_")[2] ) or 0
+			stage = tonumber( crop:split("_")[2] ) or 0
 			stage = math.min(stage + strength, crops[n][2])
 
 			-- check for place_param setting
