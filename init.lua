@@ -533,9 +533,28 @@ minetest.register_craftitem("bonemeal:bone", {
 	inventory_image = "bonemeal_bone.png",
 })
 
+-- gelatin powder
+minetest.register_craftitem("bonemeal:gelatin_powder", {
+	description = S("Gelatin Powder"),
+	inventory_image = "bonemeal_gelatin_powder.png",
+	groups = {food_gelatin = 1, flammable = 2},
+})
+
 
 --- crafting recipes
 
+-- gelatin powder
+minetest.register_craft({
+	output = "bonemeal:gelatin_powder 4",
+	recipe = {
+		{"bonemeal:bone", "bonemeal:bone", "bonemeal:bone"},
+		{"bucket:bucket_water", "bucket:bucket_water", "bucket:bucket_water"},
+		{"bucket:bucket_water", "default:torch", "bucket:bucket_water"},
+	},
+	replacements = {
+		{"bucket:bucket_water", "bucket:bucket_empty 5"},
+	},
+})
 
 -- bonemeal (from bone)
 minetest.register_craft({
