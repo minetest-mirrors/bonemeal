@@ -619,4 +619,4 @@ local path = minetest.get_modpath("bonemeal")
 dofile(path .. "/mods.lua")
 dofile(path .. "/lucky_block.lua")
 
-print (S("[bonemeal] loaded"))
+print (S("[MOD] bonemeal loaded"))

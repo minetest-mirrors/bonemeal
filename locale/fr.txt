@@ -4,4 +4,4 @@ Mulch = Paillis
 Bone Meal = Poudre d'os
 Fertiliser = Engrais
 Bone = Os
-[bonemeal] loaded = [bonemeal] chargé
+[MOD] bonemeal loaded = [MOD] bonemeal chargé
