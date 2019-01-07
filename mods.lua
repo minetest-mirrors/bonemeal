@@ -123,3 +123,20 @@ elseif minetest.get_modpath("technic_worldgen") then
 		{"moretrees:rubber_tree_sapling", technic.rubber_tree_model, "soil"},
 	})
 end
+
+
+if minetest.get_modpath("caverealms") then
+
+	local fil = minetest.get_modpath("caverealms") .. "/schematics/shroom.mts"
+	local add_shroom = function(pos)
+
+		minetest.swap_node(pos, {name = "air"})
+
+		minetest.place_schematic(
+			{x = pos.x - 5, y = pos.y, z = pos.z - 5}, fil, 0, nil, false)
+	end
+
+	bonemeal:add_sapling({
+		{"caverealms:mushroom_sapling", add_shroom, "soil"},
+	})
+end
