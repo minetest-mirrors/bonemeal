@@ -213,12 +213,21 @@ local function check_soil(pos, nodename, strength)
 	-- set radius according to strength
 	local side = strength - 1
 	local tall = math.max(strength - 2, 0)
+	local floor = {"group:soil", "group:sand"}
+	local groups = minetest.registered_items[nodename]
+		and minetest.registered_items[nodename].groups or {}
+
+	-- only place decoration on one type of surface
+	if groups.soil then
+		floor = {"group:soil"}
+	elseif groups.sand then
+		floor = {"group:sand"}
+	end
 
 	-- get area of land with free space above
 	local dirt = minetest.find_nodes_in_area_under_air(
 		{x = pos.x - side, y = pos.y - tall, z = pos.z - side},
-		{x = pos.x + side, y = pos.y + tall, z = pos.z + side},
-		{"group:soil", "group:sand"})
+		{x = pos.x + side, y = pos.y + tall, z = pos.z + side}, floor)
 
 	-- set default grass and decoration
 	local grass = green_grass
