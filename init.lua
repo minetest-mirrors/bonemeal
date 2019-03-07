@@ -213,7 +213,7 @@ local function check_soil(pos, nodename, strength)
 	-- set radius according to strength
 	local side = strength - 1
 	local tall = math.max(strength - 2, 0)
-	local floor = {"group:soil", "group:sand"}
+	local floor
 	local groups = minetest.registered_items[nodename]
 		and minetest.registered_items[nodename].groups or {}
 
@@ -222,6 +222,8 @@ local function check_soil(pos, nodename, strength)
 		floor = {"group:soil"}
 	elseif groups.sand then
 		floor = {"group:sand"}
+	else
+		floor = {nodename}
 	end
 
 	-- get area of land with free space above
@@ -417,7 +419,8 @@ function bonemeal:on_use(pos, strength, node)
 
 	-- grow grass and flowers
 	if minetest.get_item_group(node.name, "soil") > 0
-	or minetest.get_item_group(node.name, "sand") > 0 then
+	or minetest.get_item_group(node.name, "sand") > 0
+	or minetest.get_item_group(node.name, "can_bonemeal") > 0 then
 		check_soil(pos, node.name, strength)
 		return
 	end

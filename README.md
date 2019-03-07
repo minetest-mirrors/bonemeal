@@ -30,5 +30,6 @@ Changelog:
 - 0.8 - Added support for farming redo's new garlic, pepper and onion crops
 - 0.9 - Added support for farming redo's pea and beetroot crops, checks for place_param
 - 1.0 - add_deco() now adds to existing item list while set_deco() replaces item list (thanks h-v-smacker)
+- 1.1 - Added {can_bonemeal=1} group for special nodes
 
 Lucky Blocks: 6
