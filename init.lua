@@ -37,11 +37,14 @@ end
 local saplings = {
 	{"default:sapling", default.grow_new_apple_tree, "soil"},
 	{"default:junglesapling", default.grow_new_jungle_tree, "soil"},
+	{"default:emergent_jungle_sapling", default.grow_new_emergent_jungle_tree, "soil"},
 	{"default:acacia_sapling", default.grow_new_acacia_tree, "soil"},
 	{"default:aspen_sapling", default.grow_new_aspen_tree, "soil"},
 	{"default:pine_sapling", pine_grow, "soil"},
 	{"default:bush_sapling", default.grow_bush, "soil"},
 	{"default:acacia_bush_sapling", default.grow_acacia_bush, "soil"},
+	{"default:large_cactus_seedling", default.grow_large_cactus, "sand"},
+	{"default:blueberry_bush_sapling", default.grow_blueberry_bush, "soil"},
 }
 
 -- helper tables ( "" denotes a blank item )
