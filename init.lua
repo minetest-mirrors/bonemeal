@@ -45,6 +45,7 @@ local saplings = {
 	{"default:acacia_bush_sapling", default.grow_acacia_bush, "soil"},
 	{"default:large_cactus_seedling", default.grow_large_cactus, "sand"},
 	{"default:blueberry_bush_sapling", default.grow_blueberry_bush, "soil"},
+	{"default:pine_bush_sapling", default.grow_pine_bush, "soil"},
 }
 
 -- helper tables ( "" denotes a blank item )
@@ -62,6 +63,12 @@ local flowers = {
 	"flowers:dandelion_white", "flowers:dandelion_yellow", "flowers:geranium",
 	"flowers:rose", "flowers:tulip", "flowers:viola", ""
 }
+
+-- 5.0 flower check
+if minetest.registered_nodes["flowers:tulip_black"] then
+	flowers[8] = "flowers:tulip_black"
+	flowers[9] = "flowers:chrysanthemum_green"
+end
 
 -- add additional bakedclay flowers if enabled
 if minetest.get_modpath("bakedclay") then
