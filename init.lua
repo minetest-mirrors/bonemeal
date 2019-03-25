@@ -66,17 +66,17 @@ local flowers = {
 
 -- 5.0 flower check
 if minetest.registered_nodes["flowers:tulip_black"] then
-	flowers[8] = "flowers:tulip_black"
-	flowers[9] = "flowers:chrysanthemum_green"
+	flowers[#flowers + 1] = "flowers:tulip_black"
+	flowers[#flowers + 1] = "flowers:chrysanthemum_green"
 end
 
 -- add additional bakedclay flowers if enabled
 if minetest.get_modpath("bakedclay") then
-	flowers[7] = "bakedclay:delphinium"
-	flowers[8] = "bakedclay:thistle"
-	flowers[9] = "bakedclay:lazarus"
-	flowers[10] = "bakedclay:mannagrass"
-	flowers[11] = ""
+	flowers[#flowers + 1] = "bakedclay:delphinium"
+	flowers[#flowers + 1] = "bakedclay:thistle"
+	flowers[#flowers + 1] = "bakedclay:lazarus"
+	flowers[#flowers + 1] = "bakedclay:mannagrass"
+	flowers[#flowers + 1] = ""
 end
 
 -- default biomes deco
