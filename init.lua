@@ -283,8 +283,17 @@ local function check_soil(pos, nodename, strength)
 		pos2.y = pos2.y + 1
 
 		if nod and nod ~= "" then
+
+			-- get crop param2 value
 			def = minetest.registered_nodes[nod]
-			def = def and def.place_param2 or 0
+			def = def and def.place_param2
+
+			-- if param2 not preset then get from existing node
+			if not def then
+				local node = minetest.get_node_or_nil(pos2)
+				def = node and node.param2 or 0
+			end
+
 			minetest.set_node(pos2, {name = nod, param2 = def})
 		end
 
