@@ -4,4 +4,4 @@ Mulch = Mantillo
 Bone Meal = Comida de hueso
 Fertiliser = Fertilizante
 Bone = Hueso
-[bonemeal] loaded = [bonemeal] cargado
+[MOD] bonemeal loaded = [MOD] bonemeal cargado
