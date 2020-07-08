@@ -1,0 +1,7 @@
+# init.lua
+
+Mulch = Pacciame
+Bone Meal = Pasto osseo
+Fertiliser = Fertilizzante
+Bone = Ossa
+[bonemeal] loaded = [bonemeal] caricata
