@@ -32,7 +32,7 @@ if farming and farming.mod and farming.mod == "redo" then
 		{"farming:chili_", 8},
 		{"farming:garlic_", 5},
 		{"farming:onion_", 5},
-		{"farming:pepper_", 5},
+		{"farming:pepper_", 7},
 		{"farming:pineapple_", 8},
 		{"farming:pea_", 5},
 		{"farming:beetroot_", 5},
