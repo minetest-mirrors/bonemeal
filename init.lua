@@ -70,7 +70,10 @@ minetest.after(0.1, function()
 
 	for node, def in pairs(minetest.registered_nodes) do
 
-		if def.groups.flower and not node:find("waterlily") then
+		if def.groups
+		and def.groups.flower
+		and not node:find("waterlily")
+		and not node:find("xdecor:potted_") then
 			flowers[#flowers + 1] = node
 		end
 	end
