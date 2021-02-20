@@ -63,24 +63,19 @@ local dry_grass = {
 	"default:dry_grass_5", "", ""
 }
 
--- add all in-game flowers except waterlily
+-- loads mods then add all in-game flowers except waterlily
 local flowers = {}
 
-for node, def in pairs(minetest.registered_nodes) do
+minetest.after(0.1, function()
 
-	if def.groups.flower and not node:find("waterlily") then
-		flowers[#flowers + 1] = node
+	for node, def in pairs(minetest.registered_nodes) do
+
+		if def.groups.flower and not node:find("waterlily") then
+			flowers[#flowers + 1] = node
+		end
 	end
-end
+end)
 
--- add additional bakedclay flowers if enabled
-if minetest.get_modpath("bakedclay") then
-	flowers[#flowers + 1] = "bakedclay:delphinium"
-	flowers[#flowers + 1] = "bakedclay:thistle"
-	flowers[#flowers + 1] = "bakedclay:lazarus"
-	flowers[#flowers + 1] = "bakedclay:mannagrass"
-	flowers[#flowers + 1] = ""
-end
 
 -- default biomes deco
 local deco = {
