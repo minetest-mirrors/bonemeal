@@ -62,7 +62,7 @@ local saplings = {
 	{"default:blueberry_bush_sapling", default.grow_blueberry_bush, "soil"},
 	{"default:pine_bush_sapling", default.grow_pine_bush, "soil"},
 	{"default:cactus", cactus_grow, "sand"},
-	{"default:papyrus", papyrus_grow, "soil"},
+	{"default:papyrus", papyrus_grow, "soil"}
 }
 
 -- helper tables ( "" denotes a blank item )
@@ -475,7 +475,8 @@ function bonemeal:on_use(pos, strength, node)
 	end
 
 	-- check for tree growth if pointing at sapling
-	if minetest.get_item_group(node.name, "sapling") > 0
+	if (minetest.get_item_group(node.name, "sapling") > 0
+	or node.name == "default:large_cactus_seedling")
 	and random(5 - strength) == 1 then
 		check_sapling(pos, node.name)
 		return true
@@ -621,28 +622,24 @@ minetest.register_craft({
 
 -- bonemeal (from bone)
 minetest.register_craft({
---	type = "shapeless",
 	output = "bonemeal:bonemeal 2",
 	recipe = {{"group:bone"}}
 })
 
 -- bonemeal (from player bones)
 minetest.register_craft({
---	type = "shapeless",
 	output = "bonemeal:bonemeal 4",
 	recipe = {{"bones:bones"}}
 })
 
 -- bonemeal (from coral skeleton)
 minetest.register_craft({
---	type = "shapeless",
 	output = "bonemeal:bonemeal 2",
 	recipe = {{"default:coral_skeleton"}}
 })
 
 -- mulch
 minetest.register_craft({
---	type = "shapeless",
 	output = "bonemeal:mulch 4",
 	recipe = {
 		{"group:tree", "group:leaves", "group:leaves"},
@@ -652,7 +649,6 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
---	type = "shapeless",
 	output = "bonemeal:mulch",
 	recipe = {
 		{"group:seed", "group:seed", "group:seed"},
@@ -663,7 +659,6 @@ minetest.register_craft({
 
 -- fertiliser
 minetest.register_craft({
---	type = "shapeless",
 	output = "bonemeal:fertiliser 2",
 	recipe = {{"bonemeal:bonemeal", "bonemeal:mulch"}}
 })
@@ -689,5 +684,6 @@ minetest.override_item("default:dirt", {
 -- add support for other mods
 dofile(path .. "/mods.lua")
 dofile(path .. "/lucky_block.lua")
+
 
 print ("[MOD] bonemeal loaded")
