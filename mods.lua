@@ -199,9 +199,14 @@ if minetest.get_modpath("df_trees") then
 		df_trees.spawn_spore_tree(pos)
 	end
 
+	local function fungiwood_fix(pos)
+		minetest.set_node(pos, {name = "air"})
+		df_trees.spawn_fungiwood(pos)
+	end
+
 	bonemeal:add_sapling({
 		{"df_trees:black_cap_sapling", df_trees.spawn_black_cap, "soil"},
-		{"df_trees:fungiwood_sapling", df_trees.spawn_fungiwood, "soil"},
+		{"df_trees:fungiwood_sapling", fungiwood_fix, "soil"},
 		{"df_trees:goblin_cap_sapling", df_trees.spawn_goblin_cap, "soil"},
 		{"df_trees:spore_tree_sapling", spore_tree_fix, "soil"},
 		{"df_trees:tower_cap_sapling", df_trees.spawn_tower_cap, "soil"},

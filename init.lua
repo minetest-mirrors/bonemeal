@@ -243,6 +243,8 @@ local function check_crops(pos, nodename, strength)
 
 			particle_effect(pos)
 
+			minetest.get_node_timer(pos):start(10) -- restart any timers
+
 			return true
 		end
 	end
