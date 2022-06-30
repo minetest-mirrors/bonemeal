@@ -218,12 +218,25 @@ local function check_crops(pos, nodename, strength)
 			crop = nodename:split(":")[2]
 
 			-- get stage number or set to 0 for seed
-			stage = tonumber( crop:split("_")[2] ) or 0
+			if crop:split("_")[3] then
+				stage = crop:split("_")[3]
+			else
+				stage = crop:split("_")[2]
+			end
+
+			stage = tonumber(stage) or 0
+
 			stage = min(stage + strength, crops[n][2])
 
 			-- check for place_param setting
 			nod = crops[n][1] .. stage
 			def = minetest.registered_nodes[nod]
+
+			-- make sure crop exists or isn't fully grown already
+			if not def or nod == nodename then
+				return false
+			end
+
 			def = def and def.place_param2 or 0
 
 			minetest.set_node(pos, {name = nod, param2 = def})

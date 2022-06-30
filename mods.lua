@@ -208,3 +208,16 @@ if minetest.get_modpath("df_trees") then
 		{"df_trees:tunnel_tube_sapling", df_trees.spawn_tunnel_tube, "soil"}
 	})
 end
+
+
+if minetest.get_modpath("df_farming") then
+
+	bonemeal:add_crop({
+		{"df_farming:cave_wheat_", 8, "df_farming:cave_wheat_seed"},
+		{"df_farming:dimple_cup_", 4, "df_farming:dimple_cup_seed"},
+		{"df_farming:pig_tail_", 8, "df_farming:pig_tail_seed"},
+		{"df_farming:plump_helmet_", 4, "df_farming:plump_helmet_spawn"},
+		{"df_farming:quarry_bush_", 5, "df_farming:quarry_bush_seed"},
+		{"df_farming:sweet_pod_", 6, "df_farming:sweet_pod_seed"}
+	})
+end
