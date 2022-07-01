@@ -151,7 +151,7 @@ end
 
 
 -- sapling check
-local function check_sapling(pos, nodename)
+local function check_sapling(pos, sapling_node, light_ok)
 
 	-- what is sapling placed on?
 	local under =  minetest.get_node({
@@ -165,36 +165,36 @@ local function check_sapling(pos, nodename)
 	-- check list for sapling and function
 	for n = 1, #saplings do
 
-		if saplings[n][1] == nodename then
+		if saplings[n][1] == sapling_node then
 
-			grow_on = saplings[n][3]
+			grow_on = saplings[n][3] or ""
 
-			-- sapling grows on top of specific node
-			if grow_on
-			and grow_on ~= "soil"
-			and grow_on ~= "sand"
-			and grow_on == under.name then
+			-- backwards compatibility, add 'group:' to older grouping
+			if grow_on == "soil" or grow_on == "sand" then
+				grow_on = "group:" .. grow_on
+			end
+
+			-- sapling grows on top of specific node group
+			if grow_on:find("group:") then
+
+				local group = grow_on:split(":")[2]
+
+				if minetest.get_item_group(under.name, group) > 0 then
+					can_grow = true
+				end
+
+			-- sapling grows on specific node
+			elseif grow_on == under.name then
 				can_grow = true
 			end
 
-			-- sapling grows on top of soil (default)
-			if can_grow == nil
-			and (grow_on == nil or grow_on == "soil")
-			and minetest.get_item_group(under.name, "soil") > 0 then
-				can_grow = true
-			end
+			-- check if we can grow sapling at current light level
+			if can_grow and (light_ok or saplings[n][4] == true) then
 
-			-- sapling grows on top of sand
-			if can_grow == nil
-			and grow_on == "sand"
-			and minetest.get_item_group(under.name, "sand") > 0 then
-				can_grow = true
-			end
-
-			-- check if we can grow sapling
-			if can_grow then
 				particle_effect(pos)
+
 				grow_tree(pos, saplings[n][2])
+
 				return true
 			end
 		end
@@ -203,15 +203,17 @@ end
 
 
 -- crops check
-local function check_crops(pos, nodename, strength)
+local function check_crops(pos, nodename, strength, light_ok)
 
 	local mod, crop, stage, nod, def
 
 	-- grow registered crops
 	for n = 1, #crops do
 
-		if nodename:find(crops[n][1])
-		or nodename == crops[n][3] then
+		-- check if crop can grow in current light level
+		if (light_ok or crops[n][4] == true)
+		and (nodename:find(crops[n][1])
+		or nodename == crops[n][3]) then
 
 			-- separate mod and node name
 			mod = nodename:split(":")[1] .. ":"
@@ -336,7 +338,7 @@ end
 
 
 -- add to sapling list
--- {sapling node, schematic or function name, "soil"|"sand"|specific_node}
+-- {sapling node, schematic or function name, "soil"|"sand"|specific_node|"group:"}
 --e.g. {"default:sapling", default.grow_new_apple_tree, "soil"}
 
 function bonemeal:add_sapling(list)
@@ -485,20 +487,22 @@ function bonemeal:on_use(pos, strength, node)
 	end
 
 	-- light check depending on strength (strength of 4 = no light needed)
+	local light_ok = true
+
 	if (minetest.get_node_light(pos) or 0) < (12 - (strength * 3)) then
-		return
+		light_ok = nil
 	end
 
 	-- check for tree growth if pointing at sapling
 	if (minetest.get_item_group(node.name, "sapling") > 0
 	or node.name == "default:large_cactus_seedling")
 	and random(5 - strength) == 1 then
-		check_sapling(pos, node.name)
+		check_sapling(pos, node.name, light_ok)
 		return true
 	end
 
 	-- check for crop growth
-	if check_crops(pos, node.name, strength) then
+	if check_crops(pos, node.name, strength, light_ok) then
 		return true
 	end
 end
@@ -628,10 +632,10 @@ minetest.register_craft({
 	recipe = {
 		{"group:bone", "group:bone", "group:bone"},
 		{"bucket:bucket_water", "bucket:bucket_water", "bucket:bucket_water"},
-		{"bucket:bucket_water", "default:torch", "bucket:bucket_water"},
+		{"bucket:bucket_water", "default:torch", "bucket:bucket_water"}
 	},
 	replacements = {
-		{"bucket:bucket_water", "bucket:bucket_empty 5"},
+		{"bucket:bucket_water", "bucket:bucket_empty 5"}
 	}
 })
 

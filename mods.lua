@@ -205,12 +205,12 @@ if minetest.get_modpath("df_trees") then
 	end
 
 	bonemeal:add_sapling({
-		{"df_trees:black_cap_sapling", df_trees.spawn_black_cap, "soil"},
-		{"df_trees:fungiwood_sapling", fungiwood_fix, "soil"},
-		{"df_trees:goblin_cap_sapling", df_trees.spawn_goblin_cap, "soil"},
-		{"df_trees:spore_tree_sapling", spore_tree_fix, "soil"},
-		{"df_trees:tower_cap_sapling", df_trees.spawn_tower_cap, "soil"},
-		{"df_trees:tunnel_tube_sapling", df_trees.spawn_tunnel_tube, "soil"}
+		{"df_trees:black_cap_sapling", df_trees.spawn_black_cap, "soil", true},
+		{"df_trees:fungiwood_sapling", fungiwood_fix, "soil", true},
+		{"df_trees:goblin_cap_sapling", df_trees.spawn_goblin_cap, "soil", true},
+		{"df_trees:spore_tree_sapling", spore_tree_fix, "soil", true},
+		{"df_trees:tower_cap_sapling", df_trees.spawn_tower_cap, "soil", true},
+		{"df_trees:tunnel_tube_sapling", df_trees.spawn_tunnel_tube, "soil", true}
 	})
 end
 
@@ -218,11 +218,11 @@ end
 if minetest.get_modpath("df_farming") then
 
 	bonemeal:add_crop({
-		{"df_farming:cave_wheat_", 8, "df_farming:cave_wheat_seed"},
-		{"df_farming:dimple_cup_", 4, "df_farming:dimple_cup_seed"},
-		{"df_farming:pig_tail_", 8, "df_farming:pig_tail_seed"},
-		{"df_farming:plump_helmet_", 4, "df_farming:plump_helmet_spawn"},
-		{"df_farming:quarry_bush_", 5, "df_farming:quarry_bush_seed"},
-		{"df_farming:sweet_pod_", 6, "df_farming:sweet_pod_seed"}
+		{"df_farming:cave_wheat_", 8, "df_farming:cave_wheat_seed", true},
+		{"df_farming:dimple_cup_", 4, "df_farming:dimple_cup_seed", true},
+		{"df_farming:pig_tail_", 8, "df_farming:pig_tail_seed", true},
+		{"df_farming:plump_helmet_", 4, "df_farming:plump_helmet_spawn", true},
+		{"df_farming:quarry_bush_", 5, "df_farming:quarry_bush_seed", true},
+		{"df_farming:sweet_pod_", 6, "df_farming:sweet_pod_seed", true}
 	})
 end
