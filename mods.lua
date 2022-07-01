@@ -228,3 +228,29 @@ if minetest.get_modpath("df_farming") then
 		{"df_farming:sweet_pod_", 6, "df_farming:sweet_pod_seed", true}
 	})
 end
+
+
+if minetest.get_modpath("df_primordial_items") then
+
+	local function mush_fix(pos)
+		minetest.set_node(pos, {name = "air"})
+		mapgen_helper.place_schematic(pos,
+			df_primordial_items.get_primordial_mushroom(), (math.random(1,4)-1)*90)
+	end
+
+	local function fern_fix(pos)
+		minetest.set_node(pos, {name = "air"})
+		local rotations = {0, 90, 180, 270}
+		mapgen_helper.place_schematic(pos,
+			df_primordial_items.get_fern_schematic(), rotations[math.random(1,#rotations)])
+	end
+
+	bonemeal:add_sapling({
+		{"df_primordial_items:jungle_mushroom_sapling",
+			df_primordial_items.spawn_jungle_mushroom, "soil", true},
+		{"df_primordial_items:jungletree_sapling",
+			df_primordial_items.spawn_jungle_tree, "soil", true},
+		{"df_primordial_items:mush_sapling", mush_fix, "soil", true},
+		{"df_primordial_items:fern_sapling", fern_fix, "soil", true}
+	})
+end

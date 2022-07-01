@@ -493,11 +493,9 @@ function bonemeal:on_use(pos, strength, node)
 		light_ok = nil
 	end
 
-	-- check for tree growth if pointing at sapling
-	if (minetest.get_item_group(node.name, "sapling") > 0
-	or node.name == "default:large_cactus_seedling")
-	and random(5 - strength) == 1 then
-		check_sapling(pos, node.name, light_ok)
+	-- check for sapling growth
+	if random(5 - strength) == 1
+	and check_sapling(pos, node.name, light_ok) then
 		return true
 	end
 
