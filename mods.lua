@@ -211,7 +211,8 @@ if minetest.get_modpath("df_trees") then
 		{"df_trees:spore_tree_sapling", spore_tree_fix, "soil", true},
 		{"df_trees:tower_cap_sapling", df_trees.spawn_tower_cap, "soil", true},
 		{"df_trees:tunnel_tube_sapling", df_trees.spawn_tunnel_tube, "soil", true},
-		{"df_trees:nether_cap_sapling", df_trees.spawn_nether_cap, "group:nether_cap", true}
+		{"df_trees:nether_cap_sapling", df_trees.spawn_nether_cap, "group:nether_cap", true},
+		{"df_trees:nether_cap_sapling", df_trees.spawn_nether_cap, "group:cools_lava", true}
 	})
 end
 
