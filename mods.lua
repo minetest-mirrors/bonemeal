@@ -253,4 +253,26 @@ if minetest.get_modpath("df_primordial_items") then
 		{"df_primordial_items:mush_sapling", mush_fix, "soil", true},
 		{"df_primordial_items:fern_sapling", fern_fix, "soil", true}
 	})
+
+	local jgrass = {
+		"df_primordial_items:jungle_grass_1",
+		"df_primordial_items:jungle_grass_2",
+		"df_primordial_items:jungle_grass_3",
+		"df_primordial_items:fern_1",
+		"df_primordial_items:fern_2",
+		"", "", "", ""
+	}
+
+	local jdeco = {
+		"df_primordial_items:jungle_mushroom_1",
+		"df_primordial_items:jungle_mushroom_2",
+		"df_primordial_items:glow_plant_1",
+		"df_primordial_items:glow_plant_2",
+		"df_primordial_items:glow_plant_3",
+		"", "", ""
+	}
+
+	bonemeal:add_deco({
+		{"df_primordial_items:dirt_with_jungle_grass", jgrass, jdeco}
+	})
 end

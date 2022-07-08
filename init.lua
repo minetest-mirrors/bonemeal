@@ -86,7 +86,8 @@ minetest.after(0.1, function()
 		if def.groups
 		and def.groups.flower
 		and not node:find("waterlily")
-		and not node:find("xdecor:potted_") then
+		and not node:find("xdecor:potted_")
+		and not node:find("df_farming:") then
 			flowers[#flowers + 1] = node
 		end
 	end
@@ -95,6 +96,8 @@ end)
 
 -- default biomes deco
 local deco = {
+	{"default:dirt", green_grass, flowers},
+	{"default:dirt_with_grass", green_grass, flowers},
 	{"default:dry_dirt", dry_grass, {}},
 	{"default:dry_dirt_with_dry_grass", dry_grass, {}},
 	{"default:dirt_with_dry_grass", dry_grass, flowers},
@@ -259,33 +262,21 @@ local function check_soil(pos, nodename, strength)
 	-- set radius according to strength
 	local side = strength - 1
 	local tall = max(strength - 2, 0)
-	local floor
-	local groups = minetest.registered_items[nodename]
-		and minetest.registered_items[nodename].groups or {}
-
-	-- only place decoration on one type of surface
-	if groups.soil then
-		floor = {"group:soil"}
-	elseif groups.sand then
-		floor = {"group:sand"}
-	else
-		floor = {nodename}
-	end
 
 	-- get area of land with free space above
 	local dirt = minetest.find_nodes_in_area_under_air(
 		{x = pos.x - side, y = pos.y - tall, z = pos.z - side},
-		{x = pos.x + side, y = pos.y + tall, z = pos.z + side}, floor)
+		{x = pos.x + side, y = pos.y + tall, z = pos.z + side}, {nodename})
 
 	-- set default grass and decoration
-	local grass = green_grass
-	local decor = flowers
+	local grass, decor
 
 	-- choose grass and decoration to use on dirt patch
 	for n = 1, #deco do
 
 		-- do we have a grass match?
 		if nodename == deco[n][1] then
+
 			grass = deco[n][2] or {}
 			decor = deco[n][3] or {}
 		end
