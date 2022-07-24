@@ -245,13 +245,18 @@ if minetest.get_modpath("df_primordial_items") then
 			df_primordial_items.get_fern_schematic(), rotations[math.random(1,#rotations)])
 	end
 
+	local function blood_fix(pos)
+		df_trees.grow_blood_thorn(pos, minetest.get_node(pos))
+	end
+
 	bonemeal:add_sapling({
 		{"df_primordial_items:jungle_mushroom_sapling",
 			df_primordial_items.spawn_jungle_mushroom, "soil", true},
 		{"df_primordial_items:jungletree_sapling",
 			df_primordial_items.spawn_jungle_tree, "soil", true},
 		{"df_primordial_items:mush_sapling", mush_fix, "soil", true},
-		{"df_primordial_items:fern_sapling", fern_fix, "soil", true}
+		{"df_primordial_items:fern_sapling", fern_fix, "soil", true},
+		{"df_trees:blood_thorn", blood_fix, "sand", true}
 	})
 
 	local jgrass = {
@@ -274,5 +279,21 @@ if minetest.get_modpath("df_primordial_items") then
 
 	bonemeal:add_deco({
 		{"df_primordial_items:dirt_with_jungle_grass", jgrass, jdeco}
+	})
+
+	local fgrass = {
+		"df_primordial_items:fungal_grass_1",
+		"df_primordial_items:fungal_grass_2",
+		"", "", "", ""
+	}
+
+	local fdeco = {
+		"df_primordial_items:glow_orb_stalks",
+		"df_primordial_items:glow_pods",
+		"", "", ""
+	}
+
+	bonemeal:add_deco({
+		{"df_primordial_items:dirt_with_mycelium", fgrass, fdeco}
 	})
 end
