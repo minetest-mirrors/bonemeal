@@ -204,13 +204,18 @@ if minetest.get_modpath("df_trees") then
 		df_trees.spawn_fungiwood(pos)
 	end
 
+	local function tunnel_fix(pos)
+		minetest.set_node(pos, {name = "air"})
+		df_trees.spawn_tunnel_tube(pos)
+	end
+
 	bonemeal:add_sapling({
 		{"df_trees:black_cap_sapling", df_trees.spawn_black_cap, "soil", true},
 		{"df_trees:fungiwood_sapling", fungiwood_fix, "soil", true},
 		{"df_trees:goblin_cap_sapling", df_trees.spawn_goblin_cap, "soil", true},
 		{"df_trees:spore_tree_sapling", spore_tree_fix, "soil", true},
 		{"df_trees:tower_cap_sapling", df_trees.spawn_tower_cap, "soil", true},
-		{"df_trees:tunnel_tube_sapling", df_trees.spawn_tunnel_tube, "soil", true},
+		{"df_trees:tunnel_tube_sapling", tunnel_fix, "soil", true},
 		{"df_trees:nether_cap_sapling", df_trees.spawn_nether_cap, "group:nether_cap", true},
 		{"df_trees:nether_cap_sapling", df_trees.spawn_nether_cap, "group:cools_lava", true}
 	})
