@@ -25,7 +25,7 @@ if farming and farming.mod and farming.mod == "redo" then
 		{"farming:cucumber_", 4},
 		{"farming:potato_", 4},
 		{"farming:grapes_", 8},
-		{"farming:rhubarb_", 3},
+		{"farming:rhubarb_", 4},
 		{"farming:barley_", 7},
 		{"farming:hemp_", 8},
 		{"farming:chili_", 8},
@@ -49,7 +49,8 @@ if farming and farming.mod and farming.mod == "redo" then
 		{"farming:sunflower_", 8},
 		{"farming:asparagus_", 5},
 		{"farming:eggplant_", 4},
-		{"farming:spinach_", 4}
+		{"farming:spinach_", 4},
+		{"ethereal:strawberry_", 8}
 	})
 end
 
