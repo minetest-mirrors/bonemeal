@@ -127,6 +127,7 @@ if minetest.get_modpath("moretrees") then
 		{"moretrees:spruce_sapling", moretrees.grow_spruce, "soil"},
 		{"moretrees:cedar_sapling", moretrees.spawn_cedar_object, "soil"},
 		{"moretrees:poplar_sapling", moretrees.spawn_poplar_object, "soil"},
+		{"moretrees:poplar_small_sapling", moretrees.spawn_poplar_small_object, "soil"},
 		{"moretrees:willow_sapling", moretrees.spawn_willow_object, "soil"},
 		{"moretrees:rubber_tree_sapling", moretrees.spawn_rubber_tree_object, "soil"},
 		{"moretrees:fir_sapling", fir_grow, "soil"}
