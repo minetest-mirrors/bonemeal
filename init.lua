@@ -6,11 +6,9 @@ local min, max, random = math.min, math.max, math.random
 
 
 -- translation support
-local S
+local S = function(s) return s end -- default boilerplate function
 if minetest.get_translator ~= nil then
 	S = minetest.get_translator("bonemeal") -- 5.x translation function
-else -- boilerplate function
-	S = function(s) return s end
 end
 
 
