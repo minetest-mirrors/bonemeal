@@ -96,3 +96,10 @@ https://forum.minetest.net/viewtopic.php?f=9&t=16446
 
 * Added helper function for position and protection check
 * Added ginger support
+* Added moretrees poplar sapling
+
+### Version 1.7
+
+* Added farming redo's barley, hemp, rye, oat, mint, sunflower, rice seeds
+* Added Everness saplings
+* Update readme

@@ -307,3 +307,22 @@ if minetest.get_modpath("df_primordial_items") then
 		{"df_primordial_items:dirt_with_mycelium", fgrass, fdeco}
 	})
 end
+
+
+if minetest.get_modpath("everness") then
+
+	bonemeal:add_sapling({
+		{"everness:baobab_sapling", Everness.grow_baobab_tree, "soil"},
+		{"everness:coral_tree_bioluminescent_sapling",
+				Everness.coral_tree_bioluminescent, "soil"},
+		{"everness:coral_tree_sapling", Everness.grow_coral_tree, "soil"},
+		{"everness:crystal_bush_sapling", Everness.grow_crystal_bush, "soil"},
+		{"everness:crystal_tree_large_sapling", Everness.grow_crystal_large_tree, "soil"},
+		{"everness:crystal_tree_sapling", Everness.grow_crystal_tree, "soil"},
+		{"everness:cursed_bush_sapling", Everness.grow_cursed_bush, "soil"},
+		{"everness:cursed_dream_tree_sapling", Everness.grow_cursed_dream_tree, "soil"},
+		{"everness:dry_tree_sapling", Everness.grow_dry_tree, "soil"},
+		{"everness:sequoia_tree_sapling", Everness.grow_sequoia_tree, "soil"},
+		{"everness:willow_tree_sapling", Everness.grow_willow_tree, "soil"}
+	})
+end
