@@ -352,7 +352,7 @@ local function use_checks(user, pointed_thing)
 	local def = minetest.registered_items[node.name]
 	local dirt = def and def.groups
 
-	-- does node exist
+	-- does node have groups set
 	if not dirt then
 		return false
 	end
@@ -570,10 +570,10 @@ minetest.register_craftitem("bonemeal:mulch", {
 		if node then
 
 			-- call global on_use function with strength of 1
-			bonemeal:on_use(pointed_thing.under, 1, node)
+			local used = bonemeal:on_use(pointed_thing.under, 1, node)
 
 			-- take item if not in creative
-			if not bonemeal.is_creative(user:get_player_name()) then
+			if used and not bonemeal.is_creative(user:get_player_name()) then
 				itemstack:take_item()
 			end
 		end
@@ -596,10 +596,10 @@ minetest.register_craftitem("bonemeal:bonemeal", {
 		if node then
 
 			-- call global on_use function with strength of 2
-			bonemeal:on_use(pointed_thing.under, 2, node)
+			local used = bonemeal:on_use(pointed_thing.under, 2, node)
 
 			-- take item if not in creative
-			if not bonemeal.is_creative(user:get_player_name()) then
+			if used and not bonemeal.is_creative(user:get_player_name()) then
 				itemstack:take_item()
 			end
 		end
@@ -622,10 +622,10 @@ minetest.register_craftitem("bonemeal:fertiliser", {
 		if node then
 
 			-- call global on_use function with strength of 3
-			bonemeal:on_use(pointed_thing.under, 3, node)
+			local used = bonemeal:on_use(pointed_thing.under, 3, node)
 
 			-- take item if not in creative
-			if not bonemeal.is_creative(user:get_player_name()) then
+			if used and not bonemeal.is_creative(user:get_player_name()) then
 				itemstack:take_item()
 			end
 		end
