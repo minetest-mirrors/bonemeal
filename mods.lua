@@ -79,7 +79,8 @@ if minetest.get_modpath("ethereal") then
 		{"ethereal:birch_sapling", ethereal.grow_birch_tree, "soil"},
 		{"ethereal:sakura_sapling", ethereal.grow_sakura_tree, "soil"},
 		{"ethereal:lemon_tree_sapling", ethereal.grow_lemon_tree, "soil"},
-		{"ethereal:olive_tree_sapling", ethereal.grow_olive_tree, "soil"}
+		{"ethereal:olive_tree_sapling", ethereal.grow_olive_tree, "soil"},
+		{"ethereal:basandra_bush_sapling", ethereal.grow_basandra_bush, "soil"}
 	})
 
 	local grass = {"default:grass_3", "default:grass_4", "default:grass_5", ""}
