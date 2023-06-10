@@ -670,15 +670,17 @@ minetest.register_craft({
 
 -- bonemeal (from bone)
 minetest.register_craft({
+	type = "cooking",
 	output = "bonemeal:bonemeal 2",
-	recipe = {{"group:bone"}}
+	recipe = "group:bone",
+	cooktime = 4
 })
 
 -- bonemeal (from player bones)
 if minetest.settings:get_bool("bonemeal.disable_deathbones_recipe") ~= true then
 
 	minetest.register_craft({
-		output = "bonemeal:bonemeal 4",
+		output = "bonemeal:bone 2",
 		recipe = {{"bones:bones"}}
 	})
 end

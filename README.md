@@ -3,7 +3,7 @@
 **Name**: `bonemeal`
 
 This mod adds four new items into the game, bones which can be dug from normal
-dirt which can be made into bonemeal, mulch which is is crafted using a tree
+dirt which can be cooked into bonemeal, mulch which is is crafted using a tree
 and 8x leaves, and fertiliser which is a mixture of them both.
 
 Each item can be used on saplings and crops for a chance to grow them quicker
