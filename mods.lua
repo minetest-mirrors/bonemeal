@@ -334,7 +334,12 @@ if minetest.get_modpath("bushes_classic") then
 	local function grow_bush(pos)
 
 		local meta = minetest.get_meta(pos)
-		local bush_name = meta:get_string("bush_type") or "strawberry"
+		local bush_name = meta:get_string("bush_type")
+
+		-- default if no meta
+		if not bush_name or bush_name == "" then
+			bush_name = "strawberry"
+		end
 
 		minetest.swap_node(pos, {name = "bushes:" .. bush_name .. "_bush"})
 	end
