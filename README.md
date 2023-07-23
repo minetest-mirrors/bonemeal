@@ -191,6 +191,7 @@ https://forum.minetest.net/viewtopic.php?f=9&t=16446
 * Update readme (thanks mckaygerhard)
 * Recipe changes, player bones craft into 2x bones, bones must be cooked to
   give bonemeal
+* Added bushes_classic support
 
 ## LICENSE
 

@@ -327,3 +327,19 @@ if minetest.get_modpath("everness") then
 		{"everness:willow_tree_sapling", Everness.grow_willow_tree, "soil"}
 	})
 end
+
+
+if minetest.get_modpath("bushes_classic") then
+
+	local function grow_bush(pos)
+
+		local meta = minetest.get_meta(pos)
+		local bush_name = meta:get_string("bush_type") or "strawberry"
+
+		minetest.swap_node(pos, {name = "bushes:" .. bush_name .. "_bush"})
+	end
+
+	bonemeal:add_sapling({
+		{"bushes:fruitless_bush", grow_bush, "soil"},
+	})
+end
