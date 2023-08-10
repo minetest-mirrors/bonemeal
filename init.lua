@@ -88,6 +88,7 @@ minetest.after(0.1, function()
 		if def.groups
 		and def.groups.flower
 		and not node:find("waterlily")
+		and not node:find("seaweed")
 		and not node:find("xdecor:potted_")
 		and not node:find("df_farming:") then
 			flowers[#flowers + 1] = node
@@ -516,6 +517,14 @@ function bonemeal:on_use(pos, strength, node)
 	elseif node.name == "default:cactus" then
 
 		default.grow_cactus(pos, node)
+
+		particle_effect(pos)
+
+		return true
+
+	elseif node.name == "default:dry_dirt" and strength == 1 then
+
+		minetest.set_node(pos, {name = "default:dry_dirt_with_dry_grass"})
 
 		particle_effect(pos)
 
