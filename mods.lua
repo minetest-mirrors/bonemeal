@@ -9,6 +9,97 @@ if minetest.get_modpath("animalmaterials") then
 end
 
 
+if minetest.get_modpath("default") then
+
+	-- saplings
+
+	local function pine_grow(pos)
+
+		if minetest.find_node_near(pos, 1,
+			{"default:snow", "default:snowblock", "default:dirt_with_snow"}) then
+
+			default.grow_new_snowy_pine_tree(pos)
+		else
+			default.grow_new_pine_tree(pos)
+		end
+	end
+
+	local function cactus_grow(pos)
+		default.grow_cactus(pos, minetest.get_node(pos))
+	end
+
+	local function papyrus_grow(pos)
+		default.grow_papyrus(pos, minetest.get_node(pos))
+	end
+
+	bonemeal:add_sapling({
+		{"default:sapling", default.grow_new_apple_tree, "soil"},
+		{"default:junglesapling", default.grow_new_jungle_tree, "soil"},
+		{"default:emergent_jungle_sapling", default.grow_new_emergent_jungle_tree, "soil"},
+		{"default:acacia_sapling", default.grow_new_acacia_tree, "soil"},
+		{"default:aspen_sapling", default.grow_new_aspen_tree, "soil"},
+		{"default:pine_sapling", pine_grow, "soil"},
+		{"default:bush_sapling", default.grow_bush, "soil"},
+		{"default:acacia_bush_sapling", default.grow_acacia_bush, "soil"},
+		{"default:large_cactus_seedling", default.grow_large_cactus, "sand"},
+		{"default:blueberry_bush_sapling", default.grow_blueberry_bush, "soil"},
+		{"default:pine_bush_sapling", default.grow_pine_bush, "soil"},
+		{"default:cactus", cactus_grow, "sand"},
+		{"default:papyrus", papyrus_grow, "soil"}
+	})
+
+	-- decoration
+
+	local green_grass = {
+		"default:grass_2", "default:grass_3", "default:grass_4",
+		"default:grass_5", "", ""
+	}
+
+	local dry_grass = {
+		"default:dry_grass_2", "default:dry_grass_3", "default:dry_grass_4",
+		"default:dry_grass_5", "", ""
+	}
+
+	local flowers = {}
+
+	minetest.after(0.1, function()
+
+		for node, def in pairs(minetest.registered_nodes) do
+
+			if def.groups
+			and def.groups.flower
+			and not node:find("waterlily")
+			and not node:find("seaweed")
+			and not node:find("xdecor:potted_")
+			and not node:find("df_farming:") then
+				flowers[#flowers + 1] = node
+			end
+		end
+	end)
+
+	bonemeal:add_deco({
+		{"default:dirt", bonemeal.green_grass, flowers},
+		{"default:dirt_with_grass", green_grass, flowers},
+		{"default:dry_dirt", dry_grass, {}},
+		{"default:dry_dirt_with_dry_grass", dry_grass, {}},
+		{"default:dirt_with_dry_grass", dry_grass, flowers},
+		{"default:sand", {}, {"default:dry_shrub", "", "", ""} },
+		{"default:desert_sand", {}, {"default:dry_shrub", "", "", ""} },
+		{"default:silver_sand", {}, {"default:dry_shrub", "", "", ""} },
+		{"default:dirt_with_rainforest_litter", {}, {"default:junglegrass", "", "", ""}}
+	})
+end
+
+
+if farming then
+
+	bonemeal:add_crop({
+		{"farming:cotton_", 8, "farming:seed_cotton"},
+		{"farming:wheat_", 8, "farming:seed_wheat"}
+	})
+end
+
+
 if farming and farming.mod and farming.mod == "redo" then
 
 	bonemeal:add_crop({
