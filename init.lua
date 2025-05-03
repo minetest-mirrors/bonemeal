@@ -1,47 +1,42 @@
 
+-- MineClonia / VoxeLibre check
+
+local mcl = minetest.get_modpath("mcl_core")
+
+-- global
+
 bonemeal = {
 	item_list = {
-		bucket_water = "bucket:bucket_water",
-		bucket_empty = "bucket:bucket_empty",
-		dirt = "default:dirt",
-		torch = "default:torch",
-		coral = "default:coral_skeleton"
+		bucket_water = mcl and "mcl_buckets:bucket_water" or "bucket:bucket_water",
+		bucket_empty = mcl and "mcl_buckets:bucker_empty" or "bucket:bucket_empty",
+		dirt = mcl and "mcl_core:dirt" or "default:dirt",
+		torch = mcl and "mcl_torches:torch" or "default:torch",
+		coral = mcl and "mcl_ocean:dead_horn_coral_block" or "default:coral_skeleton"
 	}
 }
 
+-- translation support and vars
+
+local S = minetest.get_translator("bonemeal")
 local a = bonemeal.item_list
-
-if minetest.get_modpath("mcl_core") then
-
-	a.bucket_water = "mcl_buckets:bucket_water"
-	a.bucket_empty = "mcl_buckets:bucker_empty"
-	a.dirt = "mcl_core:dirt"
-	a.torch = "mcl_torches:torch"
-	a.coral = "mcl_ocean:dead_horn_coral_block"
-end
-
-
 local path = minetest.get_modpath("bonemeal")
 local min, max, random = math.min, math.max, math.random
 
--- translation support
-local S = minetest.get_translator("bonemeal")
+-- creative check helper
 
--- creative check
 local creative_mode_cache = minetest.settings:get_bool("creative_mode")
 function bonemeal.is_creative(name)
 	return creative_mode_cache or minetest.check_player_privs(name, {creative = true})
 end
 
+-- API tables
+
 local crops = {}
 local saplings = {}
 local deco = {}
 
---
--- local functions
---
+-- particle effect
 
--- particles
 local function particle_effect(pos)
 
 	minetest.add_particlespawner({
@@ -62,38 +57,31 @@ local function particle_effect(pos)
 	})
 end
 
-
 -- tree type check
+
 local function grow_tree(pos, object)
 
 	if type(object) == "table" and object.axiom then
 
-		-- grow L-system tree
 		minetest.remove_node(pos)
-		minetest.spawn_tree(pos, object)
+		minetest.spawn_tree(pos, object) -- grow L-system tree
 
 	elseif type(object) == "string" and minetest.registered_nodes[object] then
 
-		-- place node
-		minetest.set_node(pos, {name = object})
+		minetest.set_node(pos, {name = object}) -- place node
 
 	elseif type(object) == "function" then
 
-		-- function
-		object(pos)
+		object(pos) -- execute function
 	end
 end
 
-
 -- sapling check
+
 local function check_sapling(pos, sapling_node, strength, light_ok)
 
 	-- what is sapling placed on?
-	local under =  minetest.get_node({
-		x = pos.x,
-		y = pos.y - 1,
-		z = pos.z
-	})
+	local under =  minetest.get_node({x = pos.x, y = pos.y - 1, z = pos.z})
 
 	local can_grow, grow_on
 
@@ -138,8 +126,8 @@ local function check_sapling(pos, sapling_node, strength, light_ok)
 	end
 end
 
-
 -- crops check
+
 local function check_crops(pos, nodename, strength, light_ok)
 
 	local mod, crop, stage, nod, def
@@ -189,8 +177,8 @@ local function check_crops(pos, nodename, strength, light_ok)
 	end
 end
 
-
 -- check soil for specific decoration placement
+
 local function check_soil(pos, nodename, strength)
 
 	-- set radius according to strength
@@ -265,14 +253,12 @@ local function check_soil(pos, nodename, strength)
 	end
 end
 
-
 -- helper function
+
 local function use_checks(user, pointed_thing)
 
 	-- make sure we use on node
-	if pointed_thing.type ~= "node" then
-		return false
-	end
+	if pointed_thing.type ~= "node" then return false end
 
 	-- get position and node info
 	local pos = pointed_thing.under
@@ -281,9 +267,7 @@ local function use_checks(user, pointed_thing)
 	local dirt = def and def.groups
 
 	-- does node have groups set
-	if not dirt then
-		return false
-	end
+	if not dirt then return false end
 
 	-- if we're using on ground, move position up
 	if dirt.soil or dirt.sand or dirt.can_bonemeal then
@@ -298,9 +282,7 @@ local function use_checks(user, pointed_thing)
 	return node
 end
 
-
--- global functions
-
+--= Global functions
 
 -- add to sapling list
 -- {sapling node, schematic or function name, "soil"|"sand"|specific_node|"group:"}
@@ -313,10 +295,10 @@ function bonemeal:add_sapling(list)
 	end
 end
 
-
 -- add to crop list to force grow
 -- {crop name start_, growth steps, seed node (if required)}
 -- e.g. {"farming:wheat_", 8, "farming:seed_wheat"}
+
 function bonemeal:add_crop(list)
 
 	for n = 1, #list do
@@ -324,12 +306,12 @@ function bonemeal:add_crop(list)
 	end
 end
 
-
 -- add grass and flower/plant decoration for specific dirt types
 --  {dirt_node, {grass_nodes}, {flower_nodes}
 -- e.g. {"default:dirt_with_dry_grass", dry_grass, flowers}
 -- if an entry already exists for a given dirt type, it will add new entries and all empty
 -- entries, allowing to both add decorations and decrease their frequency.
+
 function bonemeal:add_deco(list)
 
 	for l = 1, #list do
@@ -347,8 +329,7 @@ function bonemeal:add_deco(list)
 						for _, entry in pairs(deco[n][2]) do
 
 							if extra == entry then
-								extra = false
-								break
+								extra = false ; break
 							end
 						end
 					end
@@ -366,8 +347,7 @@ function bonemeal:add_deco(list)
 						for __, entry in pairs(deco[n][3]) do
 
 							if extra == entry then
-								extra = false
-								break
+								extra = false ; break
 							end
 						end
 					end
@@ -377,8 +357,7 @@ function bonemeal:add_deco(list)
 					end
 				end
 
-				list[l] = false
-				break
+				list[l] = false ; break
 			end
 		end
 
@@ -388,9 +367,9 @@ function bonemeal:add_deco(list)
 	end
 end
 
-
 -- definitively set a decration scheme
 -- this function will either add a new entry as is, or replace the existing one
+
 function bonemeal:set_deco(list)
 
 	for l = 1, #list do
@@ -415,17 +394,15 @@ function bonemeal:set_deco(list)
 	end
 end
 
-
 -- global on_use function for bonemeal
+
 function bonemeal:on_use(pos, strength, node)
 
 	-- get node pointed at
 	local node = node or minetest.get_node(pos)
 
 	-- return if nothing there
-	if node.name == "ignore" then
-		return
-	end
+	if node.name == "ignore" then return end
 
 	-- make sure strength is between 1 and 4
 	strength = strength or 1
@@ -437,25 +414,19 @@ function bonemeal:on_use(pos, strength, node)
 
 		default.grow_papyrus(pos, node)
 
-		particle_effect(pos)
-
-		return true
+		particle_effect(pos) ; return true
 
 	elseif node.name == "default:cactus" then
 
 		default.grow_cactus(pos, node)
 
-		particle_effect(pos)
-
-		return true
+		particle_effect(pos) ; return true
 
 	elseif node.name == "default:dry_dirt" and strength == 1 then
 
 		minetest.set_node(pos, {name = "default:dry_dirt_with_dry_grass"})
 
-		particle_effect(pos)
-
-		return true
+		particle_effect(pos) ; return true
 	end
 
 	-- grow grass and flowers
@@ -486,13 +457,10 @@ function bonemeal:on_use(pos, strength, node)
 	end
 end
 
-
---
--- items
---
-
+--= Items
 
 -- mulch (strength 1)
+
 minetest.register_craftitem("bonemeal:mulch", {
 	description = S("Mulch"),
 	inventory_image = "bonemeal_mulch.png",
@@ -517,8 +485,8 @@ minetest.register_craftitem("bonemeal:mulch", {
 	end
 })
 
-
 -- bonemeal (strength 2)
+
 minetest.register_craftitem("bonemeal:bonemeal", {
 	description = S("Bone Meal"),
 	inventory_image = "bonemeal_item.png",
@@ -543,8 +511,8 @@ minetest.register_craftitem("bonemeal:bonemeal", {
 	end
 })
 
-
 -- fertiliser (strength 3)
+
 minetest.register_craftitem("bonemeal:fertiliser", {
 	description = S("Fertiliser"),
 	inventory_image = "bonemeal_fertiliser.png",
@@ -569,8 +537,8 @@ minetest.register_craftitem("bonemeal:fertiliser", {
 	end
 })
 
-
 -- bone
+
 minetest.register_craftitem("bonemeal:bone", {
 	description = S("Bone"),
 	inventory_image = "bonemeal_bone.png",
@@ -578,18 +546,17 @@ minetest.register_craftitem("bonemeal:bone", {
 })
 
 -- gelatin powder
+
 minetest.register_craftitem("bonemeal:gelatin_powder", {
 	description = S("Gelatin Powder"),
 	inventory_image = "bonemeal_gelatin_powder.png",
 	groups = {food_gelatin = 1, flammable = 2}
 })
 
-
---
--- crafting recipes
---
+--= Recipes
 
 -- gelatin powder
+
 minetest.register_craft({
 	output = "bonemeal:gelatin_powder 4",
 	recipe = {
@@ -603,6 +570,7 @@ minetest.register_craft({
 })
 
 -- bonemeal (from bone)
+
 minetest.register_craft({
 	type = "cooking",
 	output = "bonemeal:bonemeal 2",
@@ -611,6 +579,7 @@ minetest.register_craft({
 })
 
 -- bonemeal (from player bones)
+
 if minetest.settings:get_bool("bonemeal.disable_deathbones_recipe") ~= true then
 
 	minetest.register_craft({
@@ -620,12 +589,14 @@ if minetest.settings:get_bool("bonemeal.disable_deathbones_recipe") ~= true then
 end
 
 -- bonemeal (from coral skeleton)
+
 minetest.register_craft({
 	output = "bonemeal:bonemeal 2",
 	recipe = {{a.coral}}
 })
 
 -- mulch
+
 minetest.register_craft({
 	output = "bonemeal:mulch 4",
 	recipe = {
@@ -645,12 +616,14 @@ minetest.register_craft({
 })
 
 -- fertiliser
+
 minetest.register_craft({
 	output = "bonemeal:fertiliser 2",
 	recipe = {{"bonemeal:bonemeal", "bonemeal:mulch"}}
 })
 
 -- add bones to dirt
+
 if minetest.registered_items[a.dirt] then
 
 	minetest.override_item(a.dirt, {
@@ -670,9 +643,11 @@ if minetest.registered_items[a.dirt] then
 end
 
 -- add support for mods
+
 dofile(path .. "/mods.lua")
 
 -- lucky block support
+
 if minetest.get_modpath("lucky_block") then
 	dofile(path .. "/lucky_block.lua")
 end

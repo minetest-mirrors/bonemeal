@@ -1,5 +1,6 @@
 
 -- craft bones from animalmaterials into bonemeal
+
 if minetest.get_modpath("animalmaterials") then
 
 	minetest.register_craft({
@@ -8,6 +9,7 @@ if minetest.get_modpath("animalmaterials") then
 	})
 end
 
+-- default additions
 
 if minetest.get_modpath("default") then
 
@@ -62,6 +64,7 @@ if minetest.get_modpath("default") then
 
 	local flowers = {}
 
+	-- add flowers from other mods
 	minetest.after(0.1, function()
 
 		for node, def in pairs(minetest.registered_nodes) do
@@ -92,6 +95,7 @@ if minetest.get_modpath("default") then
 	})
 end
 
+-- default farming crops
 
 if farming then
 
@@ -101,6 +105,7 @@ if farming then
 	})
 end
 
+-- farming redo crops
 
 if farming and farming.mod and farming.mod == "redo" then
 
@@ -148,6 +153,7 @@ if farming and farming.mod and farming.mod == "redo" then
 	})
 end
 
+-- ethereal crops, saplings and grass
 
 if minetest.get_modpath("ethereal") then
 
@@ -195,6 +201,7 @@ if minetest.get_modpath("ethereal") then
 	})
 end
 
+-- moretrees saplings
 
 if minetest.get_modpath("moretrees") then
 
@@ -228,14 +235,18 @@ if minetest.get_modpath("moretrees") then
 		{"moretrees:rubber_tree_sapling", moretrees.spawn_rubber_tree_object, "soil"},
 		{"moretrees:fir_sapling", fir_grow, "soil"}
 	})
+end
 
-elseif minetest.get_modpath("technic_worldgen") then
+-- technic rubber tree
+
+if minetest.get_modpath("technic_worldgen") then
 
 	bonemeal:add_sapling({
 		{"moretrees:rubber_tree_sapling", technic.rubber_tree_model, "soil"}
 	})
 end
 
+-- caverealms mushroom
 
 if minetest.get_modpath("caverealms") then
 
@@ -253,21 +264,27 @@ if minetest.get_modpath("caverealms") then
 	})
 end
 
-
-local function y_func(grow_func)
-	return function(pos)
-		grow_func({x = pos.x, y = pos.y - 1, z = pos.z})
-	end
-end
+-- ferns
 
 if minetest.get_modpath("ferns") then
 
+	local function y_func(grow_func)
+		return function(pos)
+			grow_func({x = pos.x, y = pos.y - 1, z = pos.z})
+		end
+	end
+
 	bonemeal:add_sapling({
-		{"ferns:sapling_giant_tree_fern", y_func(abstract_ferns.grow_giant_tree_fern), "soil"},
-		{"ferns:sapling_giant_tree_fern", y_func(abstract_ferns.grow_giant_tree_fern), "sand"},
-		{"ferns:sapling_tree_fern", y_func(abstract_ferns.grow_tree_fern), "soil"}
+		{"ferns:sapling_giant_tree_fern",
+				y_func(abstract_ferns.grow_giant_tree_fern), "soil"},
+		{"ferns:sapling_giant_tree_fern",
+				y_func(abstract_ferns.grow_giant_tree_fern), "sand"},
+		{"ferns:sapling_tree_fern",
+				y_func(abstract_ferns.grow_tree_fern), "soil"}
 	})
 end
+
+-- dryplants sapling
 
 if minetest.get_modpath("dryplants") then
 
@@ -276,6 +293,7 @@ if minetest.get_modpath("dryplants") then
 	})
 end
 
+-- add bonemeal dyes
 
 if minetest.get_modpath("dye") then
 
@@ -292,6 +310,7 @@ if minetest.get_modpath("dye") then
 	end
 end
 
+-- df_trees saplings
 
 if minetest.get_modpath("df_trees") then
 
@@ -335,6 +354,7 @@ if minetest.get_modpath("df_trees") then
 	})
 end
 
+-- df_farming crops
 
 if minetest.get_modpath("df_farming") then
 
@@ -348,6 +368,7 @@ if minetest.get_modpath("df_farming") then
 	})
 end
 
+-- df_primordial saplings and plants
 
 if minetest.get_modpath("df_primordial_items") then
 
@@ -417,6 +438,7 @@ if minetest.get_modpath("df_primordial_items") then
 	})
 end
 
+-- everness saplings
 
 if minetest.get_modpath("everness") then
 
@@ -436,6 +458,7 @@ if minetest.get_modpath("everness") then
 	})
 end
 
+-- bush classic fruit
 
 if minetest.get_modpath("bushes_classic") then
 

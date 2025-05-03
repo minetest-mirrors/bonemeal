@@ -1,5 +1,5 @@
 
--- add lucky blocks
+-- helper function
 
 local function growy(pos, player)
 
@@ -10,6 +10,7 @@ local function growy(pos, player)
 	end
 end
 
+-- add lucky blocks
 
 lucky_block:add_blocks({
 	{"lig"},
