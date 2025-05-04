@@ -3,7 +3,7 @@
 
 local function growy(pos, player)
 
-	local dpos = minetest.find_node_near(pos, 1, "group:soil")
+	local dpos = core.find_node_near(pos, 1, "group:soil")
 
 	if dpos then
 		bonemeal:on_use(dpos, 5)
