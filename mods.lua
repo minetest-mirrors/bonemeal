@@ -264,15 +264,17 @@ if core.get_modpath("caverealms") then
 	})
 end
 
+-- helper
+
+local function y_func(grow_func)
+	return function(pos)
+		grow_func({x = pos.x, y = pos.y - 1, z = pos.z})
+	end
+end
+
 -- ferns
 
 if core.get_modpath("ferns") then
-
-	local function y_func(grow_func)
-		return function(pos)
-			grow_func({x = pos.x, y = pos.y - 1, z = pos.z})
-		end
-	end
 
 	bonemeal:add_sapling({
 		{"ferns:sapling_giant_tree_fern",
