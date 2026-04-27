@@ -152,6 +152,10 @@ if farming and farming.mod and farming.mod == "redo" then
 		{"farming:ginger_", 4},
 		{"ethereal:strawberry_", 8}
 	})
+
+	bonemeal:add_sapling({
+		{"farming:kiwi_sapling", farming.grow_kiwi_vine, "soil"}
+	})
 end
 
 -- ethereal crops, saplings and grass
