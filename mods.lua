@@ -82,7 +82,7 @@ if core.get_modpath("default") then
 	end)
 
 	bonemeal:add_deco({
-		{"default:dirt", bonemeal.green_grass, flowers},
+		{"default:dirt", green_grass, flowers},
 		{"default:dirt_with_grass", green_grass, flowers},
 		{"default:dry_dirt", dry_grass, {}},
 		{"default:dry_dirt_with_dry_grass", dry_grass, {}},

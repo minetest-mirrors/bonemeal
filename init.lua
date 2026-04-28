@@ -129,6 +129,7 @@ local function check_crops(pos, nodename, strength, light_ok)
 	for n = 1, #crops do
 
 		-- check if crop can grow in current light level
+		-- [1] = crop, [2] = stages, [3] = seed, [4] = can grow in dark
 		if (light_ok or crops[n][4])
 		and (nodename == crops[n][3] or nodename:find(crops[n][1])) then
 
@@ -170,7 +171,7 @@ local function check_soil(pos, nodename, strength)
 
 	if #dirt == 0 then return end
 
-	local grass, decor
+	local grass, decor = {}, {}
 
 	-- choose grass and decoration to use on dirt patch
 	for n = 1, #deco do
@@ -258,6 +259,30 @@ function bonemeal:add_crop(list)
 	end
 end
 
+-- helpers
+
+local function check_for(look_inside, look_for)
+
+	for _,item in pairs(look_inside) do
+
+		if item == look_for then
+--print("-- found dupe item", look_for)
+			return true
+		end
+	end
+end
+
+local function add_new(add_to, items)
+
+	for _,item in pairs(items) do
+
+		if item ~= "" and not check_for(add_to, item) then
+--print("-- added", item)
+			add_to[#add_to + 1] = item
+		end
+	end
+end
+
 -- add grass and flower/plant decoration for specific dirt types
 --  {dirt_node, {grass_nodes}, {flower_nodes}
 -- e.g. {"default:dirt_with_dry_grass", dry_grass, flowers}
@@ -266,55 +291,23 @@ end
 
 function bonemeal:add_deco(list)
 
-	for l = 1, #list do
+	for i = 1, #list do
 
-		for n = 1, #deco do
+		local found
 
-			-- update existing entry
-			if list[l][1] == deco[n][1] then
+		for j = 1, #deco do -- go through existing
 
-				-- adding grass types
-				for _, extra in pairs(list[l][2]) do
+			if list[i][1] == deco[j][1] then
+--print("-- found dupe grass", list[i][1])
+				add_new(deco[j][2], list[i][2]) -- grass
+				add_new(deco[j][3], list[i][3]) -- flowers
 
-					if extra ~= "" then
-
-						for _, entry in pairs(deco[n][2]) do
-
-							if extra == entry then
-								extra = false ; break
-							end
-						end
-					end
-
-					if extra then
-						deco[n][2][#deco[n][2] + 1] = extra
-					end
-				end
-
-				-- adding decoration types
-				for _, extra in ipairs(list[l][3]) do
-
-					if extra ~= "" then
-
-						for __, entry in pairs(deco[n][3]) do
-
-							if extra == entry then
-								extra = false ; break
-							end
-						end
-					end
-
-					if extra then
-						deco[n][3][#deco[n][3] + 1] = extra
-					end
-				end
-
-				list[l] = false ; break
+				found = true ; break
 			end
 		end
 
-		if list[l] then
-			deco[#deco + 1] = list[l]
+		if not found then
+			deco[#deco + 1] = list[i]
 		end
 	end
 end
