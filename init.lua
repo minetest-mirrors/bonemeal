@@ -37,24 +37,39 @@ local deco = {}
 
 -- particle effect
 
+local anim_effect = core.has_feature("particlespawner_tweenable")
+
 local function particle_effect(pos)
 
-	core.add_particlespawner({
+	local def = {
 		amount = 4,
 		time = 0.15,
 		minpos = pos,
 		maxpos = pos,
-		minvel = {x = -1, y = 2, z = -1},
-		maxvel = {x = 1, y = 4, z = 1},
+		minvel = {x = -0.5, y = 1, z = -0.5},
+		maxvel = {x = 0.5, y = 2, z = 0.5},
 		minacc = {x = -1, y = -1, z = -1},
 		maxacc = {x = 1, y = 1, z = 1},
 		minexptime = 1,
 		maxexptime = 1,
-		minsize = 1,
+		minsize = 1.5,
 		maxsize = 3,
 		texture = "bonemeal_particle.png",
 		glow = 5
-	})
+	}
+
+	if core.features.particlespawner_tweenable then
+		def.texture = "bonemeal_particle_animated.png"
+		def.animation = {
+			type = 'vertical_frames', aspect_w = 8, aspect_h = 8, length = 0.5
+		}
+	end
+
+	core.add_particlespawner(def)
+end
+
+local function sfx(pos)
+	core.sound_play("bonemeal_chime", {pos = pos, max_hear_distance = 5}, true)
 end
 
 -- tree type check
@@ -109,7 +124,7 @@ local function check_sapling(pos, sapling_node, strength, light_ok)
 			-- check if we can grow sapling at current light level
 			if can_grow and (light_ok or saplings[n][4]) then
 
-				particle_effect(pos)
+				particle_effect(pos) ; sfx(pos)
 
 				if math.random(5 - strength) == 1 then
 					grow_tree(pos, saplings[n][2])
@@ -147,7 +162,7 @@ local function check_crops(pos, nodename, strength, light_ok)
 			core.set_node(pos,
 					{name = next_nodename, param2 = node_def.place_param2 or 0})
 
-			particle_effect(pos)
+			particle_effect(pos) ; sfx(pos)
 
 			core.get_node_timer(pos):start(10)
 
@@ -208,6 +223,7 @@ local function check_soil(pos, nodename, strength)
 			particle_effect(p)
 		end
 	end
+	sfx(pos)
 end
 
 -- helper function
@@ -359,19 +375,19 @@ function bonemeal:on_use(pos, strength, node)
 
 		default.grow_papyrus(pos, node)
 
-		particle_effect(pos) ; return true
+		particle_effect(pos) ; sfx(pos) ; return true
 
 	elseif node.name == "default:cactus" then
 
 		default.grow_cactus(pos, node)
 
-		particle_effect(pos) ; return true
+		particle_effect(pos) ; sfx(pos) ; return true
 
 	elseif node.name == "default:dry_dirt" and strength == 1 then
 
 		core.set_node(pos, {name = "default:dry_dirt_with_dry_grass"})
 
-		particle_effect(pos) ; return true
+		particle_effect(pos) ; sfx(pos) ; return true
 	end
 
 	-- grow grass and flowers
