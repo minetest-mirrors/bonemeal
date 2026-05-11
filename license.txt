@@ -24,7 +24,7 @@ THE SOFTWARE.
 Textures by TenPlus1 (CC0)
 
 Texture by Shqug (Attribution-ShareAlike 4.0 International):
-  bonemeal_particle_animated.png
+  bonemeal_particle*.png
 
 Sound by neagesoup (CC0 - https://freesound.org/people/newagesoup/sounds/351408/)
   bonemeal_chime.ogg

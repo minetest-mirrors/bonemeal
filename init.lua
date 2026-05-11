@@ -37,8 +37,6 @@ local deco = {}
 
 -- particle effect
 
-local anim_effect = core.has_feature("particlespawner_tweenable")
-
 local function particle_effect(pos)
 
 	local def = {
