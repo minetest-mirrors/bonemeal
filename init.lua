@@ -143,28 +143,49 @@ local function check_crops(pos, nodename, strength, light_ok)
 
 		-- check if crop can grow in current light level
 		-- [1] = crop, [2] = stages, [3] = seed, [4] = can grow in dark
-		if (light_ok or crops[n][4])
-		and (nodename == crops[n][3] or nodename:find(crops[n][1])) then
+		if (light_ok or crops[n][4]) then
 
-			-- get stage and set next to place
-			local stage = tonumber(nodename:match("_(%d+)$")) or 0
-			local new_stage = min(stage + strength, crops[n][2])
-			local next_nodename = crops[n][1] .. new_stage
+			local def = core.registered_nodes[nodename]
 
-			if next_nodename == nodename then return end
+			-- if node already has next_plant
+			if def and def.next_plant then
 
-			local node_def = core.registered_nodes[next_nodename]
+				for g = 1, strength do
 
-			if not node_def then return end
+					def = core.registered_nodes[core.get_node(pos).name]
 
-			core.set_node(pos,
-					{name = next_nodename, param2 = node_def.place_param2 or 0})
+					local next_node = def and def.next_plant
 
-			particle_effect(pos) ; sfx(pos)
+					if next_node then
 
-			core.get_node_timer(pos):start(10)
+						core.set_node(pos, {name = next_node, param2 = def.place_param2})
 
-			return true
+						particle_effect(pos)
+					end
+				end
+
+				sfx(pos) ; return true
+
+			-- otherwise if node is on the registered list
+			elseif nodename == crops[n][3] or nodename:find(crops[n][1]) then
+
+				-- get stage and set next to place
+				local stage = tonumber(nodename:match("_(%d+)$")) or 0
+				local new_stage = min(stage + strength, crops[n][2])
+				local next_nodename = crops[n][1] .. new_stage
+
+				if next_nodename == nodename then return end
+
+				local node_def = core.registered_nodes[next_nodename]
+
+				if not node_def then return end
+
+				core.set_node(pos, {name = next_nodename, param2 = node_def.place_param2})
+
+				particle_effect(pos) ; sfx(pos)
+
+				return true
+			end
 		end
 	end
 end
