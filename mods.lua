@@ -501,3 +501,17 @@ if core.get_modpath("bushes_classic") then
 		{"bushes:fruitless_bush", grow_bush, "soil"},
 	})
 end
+
+-- nether (custom function for xnether trees for both separate mod and xanadu)
+
+if core.get_modpath("nether") then
+
+	local function reduce_timer(pos)
+		core.get_node_timer(pos):start(1) -- reduce timer to 1 second for quick grow
+	end
+
+	bonemeal:add_sapling({
+		{"xnether:purple_sapling", reduce_timer, "nether:rack", true},
+		{"xnether:blue_sapling", reduce_timer, "nether:rack_deep", true}
+	})
+end
