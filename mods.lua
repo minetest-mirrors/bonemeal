@@ -489,17 +489,14 @@ if core.get_modpath("bushes_classic") then
 	local function grow_bush(pos)
 
 		local meta = core.get_meta(pos)
-		local bush_name = meta:get_string("bush_type")
+		local bush_name = meta and meta:get_string("bush_type")
 
-		-- only change if meta found
-		if meta and bush_name then
-			core.swap_node(pos, {name = "bushes:" .. bush_name .. "_bush"})
-		end
+		if not bush_name or bush_name == "" then bush_name = "blueberry" end
+
+		core.swap_node(pos, {name = "bushes:" .. bush_name .. "_bush"})
 	end
 
-	bonemeal:add_sapling({
-		{"bushes:fruitless_bush", grow_bush, "soil"},
-	})
+	bonemeal:add_sapling({ {"bushes:fruitless_bush", grow_bush, "soil"} })
 end
 
 -- helper function to reduce node timer to 1 second
