@@ -200,7 +200,8 @@ if core.get_modpath("ethereal") then
 		{"ethereal:lemon_tree_sapling", ethereal.grow_lemon_tree, "soil"},
 		{"ethereal:olive_tree_sapling", ethereal.grow_olive_tree, "soil"},
 		{"ethereal:basandra_bush_sapling", ethereal.grow_basandra_bush, "soil"},
-		{"ethereal:mangrove_sapling", ethereal.grow_mangrove_tree, "soil"}
+		{"ethereal:mangrove_sapling", ethereal.grow_mangrove_tree, "soil"},
+		{"ethereal:poplar_sapling", ethereal.grow_poplar_tree, "soil"}
 	})
 
 	local grass = {"default:grass_3", "default:grass_4", "default:grass_5", ""}
