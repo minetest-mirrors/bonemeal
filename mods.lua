@@ -220,7 +220,8 @@ if core.get_modpath("ethereal") then
 		{"ethereal:grove_dirt", grass, {"ethereal:fern", "", "", ""}},
 		{"ethereal:bamboo_dirt", grass, {}},
 		{"ethereal:mud", {"default:fern_1", "default:fern_2", "default:fern_3", "", "",
-			"default:grass_5", "default:junglegrass"}, {"ethereal:bamboo"}}
+			"default:grass_5", "default:junglegrass"}, {"ethereal:bamboo"}},
+		{"ethereal:tawny_dirt", {"ethereal:tawny_grass", "", ""}, {"ethereal:shrub_red"}}
 	})
 end
 
