@@ -25,6 +25,8 @@ end
 
 -- default additions
 
+local flowers = {}
+
 if core.get_modpath("default") then
 
 	-- saplings
@@ -75,8 +77,6 @@ if core.get_modpath("default") then
 		"default:dry_grass_2", "default:dry_grass_3", "default:dry_grass_4",
 		"default:dry_grass_5", "", ""
 	}
-
-	local flowers = {}
 
 	-- add flowers from other mods
 	core.after(0.1, function()
@@ -221,7 +221,8 @@ if core.get_modpath("ethereal") then
 		{"ethereal:bamboo_dirt", grass, {}},
 		{"ethereal:mud", {"default:fern_1", "default:fern_2", "default:fern_3", "", "",
 			"default:grass_5", "default:junglegrass"}, {"ethereal:bamboo"}},
-		{"ethereal:tawny_dirt", {"ethereal:tawny_grass", "", ""}, {"ethereal:shrub_red"}}
+		{"ethereal:tawny_dirt", {"ethereal:tawny_grass", "", ""}, {"ethereal:shrub_red"}},
+		{"ethereal:magical_dirt", {"ethereal:magical_grass", "", "", ""}, flowers}
 	})
 end
 
