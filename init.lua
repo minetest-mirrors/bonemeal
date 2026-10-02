@@ -597,6 +597,10 @@ end
 
 dofile(path .. "/mods.lua")
 
+-- bone blocks
+
+dofile(path .. "/nodes.lua")
+
 -- lucky block support
 
 if core.get_modpath("lucky_block") then
