@@ -25,7 +25,7 @@ core.register_craft {
 -- bone brick
 
 core.register_node("bonemeal:bone_brick", {
-	description = S("Bone Tile"),
+	description = S("Bone Brick"),
 	tiles = {"bonemeal_bone_brick.png"},
 	groups = {oddly_breakable_by_hand = 3, cracky = 3},
 	is_ground_content = false,
